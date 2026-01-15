@@ -1,94 +1,104 @@
-import {Suspense} from 'react'
-import Link from 'next/link'
-import {PortableText} from '@portabletext/react'
+import { Metadata } from 'next';
+//import Link from "next/link";
+//import { type Post } from "./components/types";
+import HeroSection from "./components/HeroSection";
+import MobileHeroSection from "./components/MobileHeroSection";
+import GallerySection from "./components/GallerySection";
+//import PostsSection from "./components/PostsSection";
+import ContactSection from "./components/ContactSection";
+import InfoSection from "./components/InfoSection";
+import AboutSection from "./components/AboutSection";
 
-import {AllPosts} from '@/app/components/Posts'
-import GetStartedCode from '@/app/components/GetStartedCode'
-import SideBySideIcons from '@/app/components/SideBySideIcons'
-import {settingsQuery} from '@/sanity/lib/queries'
-import {sanityFetch} from '@/sanity/lib/live'
-import {dataAttr} from '@/sanity/lib/utils'
+//import { client } from "@/sanity/client";
 
-export default async function Page() {
-  const {data: settings} = await sanityFetch({
-    query: settingsQuery,
-  })
+//const POSTS_QUERY = `*[
+//  _type == "post"
+//  && defined(slug.current)
+//]|order(publishedAt desc)[0...12]{_id, title, slug, publishedAt, image, body}`;
 
+//const options = { next: { revalidate: 30 } };
+
+export const metadata: Metadata = {
+  title: 'We Construct Your Concepts',
+  description: 'We Construct Your Concepts',
+};
+
+export default async function IndexPage() {
+  //const posts = await client.fetch<Post[]>(POSTS_QUERY, {}, options);
+  // Placeholder gallery images
+  const galleryImages = [
+    "/assets/images/Gallery1.JPG",
+    "/assets/images/Gallery2.JPG",
+    "/assets/images/Gallery3.JPG",
+    "/assets/images/Gallery4.JPG",
+    "/assets/images/Gallery5.jpg",
+    "/assets/images/Gallery6.jpg",
+  ];
   return (
-    <>
-      <div className="relative">
-        <div className="relative bg-[url(/images/tile-1-black.png)] bg-size-[5px]">
-          <div className="bg-gradient-to-b from-white w-full h-full absolute top-0"></div>
-          <div className="container">
-            <div className="relative min-h-[40vh] mx-auto max-w-2xl pt-10 xl:pt-20 pb-30 space-y-6 lg:max-w-4xl lg:px-12 flex flex-col items-center justify-center">
-              <div className="flex flex-col gap-4 items-center">
-                <div className="text-md leading-6 prose uppercase py-1 px-3 bg-white font-mono italic">
-                  A starter template for
-                </div>
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-black">
-                  <Link
-                    className="underline decoration-brand hover:text-brand underline-offset-8 hover:underline-offset-4 transition-all ease-out"
-                    href="https://sanity.io/"
-                  >
-                    Sanity
-                  </Link>
-                  +
-                  <Link
-                    className="underline decoration-black text-framework underline-offset-8 hover:underline-offset-4 transition-all ease-out"
-                    href="https://nextjs.org/"
-                  >
-                    Next.js
-                  </Link>
-                </h1>
-              </div>
-            </div>
-          </div>
+    <main className="min-h-screen w-full font-sans bg-black relative overflow-hidden">
+      {/* Gradient spots */}
+      <div className="fixed inset-0 pointer-events-none">
+        {/* Yellow spots */}
+        <div className="absolute w-[1000px] h-[1000px] bg-[#FFB81C]/[0.03] rounded-full blur-3xl animate-float-slow -top-60 -left-60" />
+        <div className="absolute w-[800px] h-[800px] bg-[#FFB81C]/[0.02] rounded-full blur-3xl animate-float-slower top-1/3 left-1/4" />
+        
+        {/* Orange spots */}
+        <div className="absolute w-[1200px] h-[1200px] bg-[#FA4616]/[0.03] rounded-full blur-3xl animate-float -bottom-80 right-0" />
+        <div className="absolute w-[900px] h-[900px] bg-[#FA4616]/[0.02] rounded-full blur-3xl animate-float-slow top-1/2 -right-40" />
+        
+        {/* Red spots */}
+        <div className="absolute w-[1100px] h-[1100px] bg-[#DA291C]/[0.03] rounded-full blur-3xl animate-float-slower -left-40 top-1/4" />
+        <div className="absolute w-[700px] h-[700px] bg-[#DA291C]/[0.02] rounded-full blur-3xl animate-float bottom-1/4 left-1/3" />
+        
+        {/* Mixed color spots */}
+        <div className="absolute w-[1300px] h-[1300px] bg-gradient-to-br from-[#FFB81C]/[0.02] via-[#FA4616]/[0.02] to-[#DA291C]/[0.02] rounded-full blur-3xl animate-float-slow -top-40 right-1/4" />
+        <div className="absolute w-[950px] h-[950px] bg-gradient-to-tr from-[#DA291C]/[0.02] via-[#FA4616]/[0.02] to-[#FFB81C]/[0.02] rounded-full blur-3xl animate-float-slower bottom-1/3 -right-20" />
+      </div>
+
+      <div className="w-full">
+        {/* Responsive Hero Section */}
+        <div className="hidden md:block">
+          <HeroSection className="tv-slide-in-left" />
         </div>
-        <div className=" flex flex-col items-center">
-          <SideBySideIcons />
-          <div className="container relative mx-auto max-w-2xl pb-20 pt-10 space-y-6 lg:max-w-4xl lg:px-12 flex flex-col items-center">
-            <div className="prose sm:prose-lg md:prose-xl xl:prose-2xl text-gray-700 prose-a:text-gray-700 font-light text-center">
-              {settings?.description && (
-                <div
-                  data-sanity={dataAttr({
-                    id: settings._id,
-                    type: 'settings',
-                    path: 'description',
-                  }).toString()}
-                >
-                  <PortableText value={settings.description} />
-                </div>
-              )}
-              <div className="flex items-center flex-col gap-4">
-                <GetStartedCode />
-                <Link
-                  href="https://www.sanity.io/docs"
-                  className="inline-flex text-brand text-xs md:text-sm underline hover:text-gray-900"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Sanity Documentation
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    className="w-4 h-4 ml-1 inline"
-                    fill="currentColor"
-                  >
-                    <path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V12L17.206 8.207L11.2071 14.2071L9.79289 12.7929L15.792 6.793L12 3H21Z"></path>
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          </div>
+        <div className="block md:hidden">
+          <MobileHeroSection className="tv-slide-in-left" />
+        </div>
+        <AboutSection className="tv-slide-in-right" />
+        <section id="process" className="w-full flex flex-col items-center py-16">
+          <h2 className="text-4xl font-bold mb-10 text-large-upper bg-gradient-to-r from-[#FFB81C] to-[#FA4616] bg-clip-text text-transparent">Process</h2>
+          <InfoSection
+            title="Measure"
+            videoUrl="/assets/images/MEASUREFINAL.mp4"
+            text="Full commercial interiors? That closet under the stairs? We make products that fit their spaces.
+We use 3D scanning to get an exact model of your environment to the millimeter. This makes it easier to plan right, avoid surprises, and create perfect fits. It&apos;s fast, accurate, and gives us a solid foundation to start designing."
+          />
+          <div className="h-6" />
+          <InfoSection
+            title="Design"
+            videoUrl="/assets/images/design-2.mov"
+            text="From napkin sketch to polished concept—we work it out together.
+Whether you show up with a photo or just a problem, we&apos;ll help shape the idea. We iterate in 3D, show you options, make revisions fast, and never settle for &quot;good enough.&quot;  
+You get to see it, move it, tweak it—before anything&apos;s built."
+          />
+          <div className="h-6" />
+          <InfoSection
+            title="Build"
+            videoUrl="/assets/images/BUILD.mp4"
+            text="Then we make it for real. No compromises.
+ We build everything in-house—no outsourcing, no dilution.
+ What you see in the render is what you get in the space.
+ Clean welds, solid materials, sharp details. Built once, built right."
+          />
+        </section>
+        <GallerySection images={galleryImages} className="tv-slide-in-right" />
+        <div className="max-w-4xl mx-auto px-2 md:px-8">
+          <ContactSection />
         </div>
       </div>
-      <div className="border-t border-gray-100 bg-gray-50">
-        <div className="container">
-          <aside className="py-12 sm:py-20">
-            <Suspense>{await AllPosts()}</Suspense>
-          </aside>
-        </div>
-      </div>
-    </>
-  )
+      {/* Copyright Footer */}
+      <footer className="w-full py-4 text-center text-yellow-400/80 text-sm border-t border-yellow-400/20">
+        <p>© {new Date().getFullYear()} Superhot Fabrication. All rights reserved.</p>
+      </footer>
+    </main>
+  );
 }

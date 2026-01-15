@@ -78,22 +78,21 @@ export const post = defineType({
     defineField({
       name: 'author',
       title: 'Author',
-      type: 'reference',
-      to: [{type: 'person'}],
+      type: 'string',
+      description: 'Author name',
     }),
   ],
   // List preview configuration. https://www.sanity.io/docs/previews-list-views
   preview: {
     select: {
       title: 'title',
-      authorFirstName: 'author.firstName',
-      authorLastName: 'author.lastName',
+      author: 'author',
       date: 'date',
       media: 'coverImage',
     },
-    prepare({title, media, authorFirstName, authorLastName, date}) {
+    prepare({title, media, author, date}) {
       const subtitles = [
-        authorFirstName && authorLastName && `by ${authorFirstName} ${authorLastName}`,
+        author && `by ${author}`,
         date && `on ${format(parseISO(date), 'LLL d, yyyy')}`,
       ].filter(Boolean)
 

@@ -2,20 +2,31 @@ import './globals.css'
 
 import {SpeedInsights} from '@vercel/speed-insights/next'
 import type {Metadata} from 'next'
-import {Inter, IBM_Plex_Mono} from 'next/font/google'
+import {Geist, Geist_Mono} from 'next/font/google'
 import {draftMode} from 'next/headers'
 import {toPlainText} from 'next-sanity'
 import {VisualEditing} from 'next-sanity/visual-editing'
 import {Toaster} from 'sonner'
 
 import DraftModeToast from '@/app/components/DraftModeToast'
-import Footer from '@/app/components/Footer'
-import Header from '@/app/components/Header'
+import Navbar from '@/app/components/Navbar'
+import MobileNavbar from '@/app/components/MobileNavbar'
+import {CartProvider} from '@/app/context/CartContext'
 import * as demo from '@/sanity/lib/demo'
 import {sanityFetch, SanityLive} from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {resolveOpenGraphImage} from '@/sanity/lib/utils'
 import {handleError} from '@/app/client-utils'
+
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
 
 /**
  * Generate metadata for the page.
@@ -52,41 +63,34 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
-  display: 'swap',
-})
-
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: '--font-ibm-plex-mono',
-  weight: ['400'],
-  subsets: ['latin'],
-  display: 'swap',
-})
-
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
 
   return (
-    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable} bg-white text-black`}>
-      <body>
-        <section className="min-h-screen pt-24">
-          {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
-          <Toaster />
-          {isDraftMode && (
-            <>
-              <DraftModeToast />
-              {/*  Enable Visual Editing, only to be rendered when Draft Mode is enabled */}
-              <VisualEditing />
-            </>
-          )}
-          {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
-          <SanityLive onError={handleError} />
-          <Header />
-          <main className="">{children}</main>
-          <Footer />
-        </section>
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
+        {/* @ts-expect-error - sonner types incompatible with React 18 */}
+        <Toaster />
+        {isDraftMode && (
+          <>
+            <DraftModeToast />
+            {/*  Enable Visual Editing, only to be rendered when Draft Mode is enabled */}
+            <VisualEditing />
+          </>
+        )}
+        {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
+        <SanityLive onError={handleError} />
+        <CartProvider>
+          {/* Responsive Navbar */}
+          <div className="hidden md:block">
+            <Navbar />
+          </div>
+          <div className="block md:hidden">
+            <MobileNavbar />
+          </div>
+          {children}
+        </CartProvider>
         <SpeedInsights />
       </body>
     </html>

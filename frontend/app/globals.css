@@ -1,26 +1,18 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @plugin "@tailwindcss/typography";
 
-@layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-medium tracking-tight;
-  }
+:root {
+  --background: #f26e26;
+  --foreground: #171717;
 }
 
-@utility container {
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-@custom-variant dark (&:where(.dark, .dark *));
-
-@theme {
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  
   --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
 
   --color-framework: #000;
@@ -42,4 +34,96 @@
   --color-gray-950: #13141b;
 
   --default-transition-duration: 250ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-medium tracking-tight;
+  }
+  
+  body {
+    background: #f26e26;
+    color: #171717;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+}
+
+@utility container {
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Large, uppercase text utility */
+.text-large-upper {
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+/* Dark text gradient utility */
+.text-dark-gradient {
+  background: linear-gradient(90deg, #171717 60%, #444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+/* TV mask for retro CRT effect using SVG path (accentuated curves) */
+.tv-mask {
+  position: relative;
+  /* SVG path for CRT bulge shape, accentuated */
+  clip-path: path('M 80 30 Q 540 -80 1000 30 Q 1080 120 1000 698 Q 540 808 80 698 Q 0 600 80 30 Z');
+  border-radius: 0;
+}
+
+.tv-mask::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* border: 4px solid #FACC15; */
+  /* clip-path: path('M 80 30 Q 540 -80 1000 30 Q 1080 120 1000 698 Q 540 808 80 698 Q 0 600 80 30 Z'); */
+  pointer-events: none;
+  z-index: 30;
+}
+
+/* TV frame slide-in animation */
+@keyframes tv-slide-in-left {
+  from { transform: translateX(-80vw) scale(0.95); opacity: 0; }
+  to { transform: translateX(0) scale(1); opacity: 1; }
+}
+@keyframes tv-slide-in-right {
+  from { transform: translateX(80vw) scale(0.95); opacity: 0; }
+  to { transform: translateX(0) scale(1); opacity: 1; }
+}
+.tv-slide-in-left {
+  animation: tv-slide-in-left 1s cubic-bezier(0.6,0.2,0.2,1) both;
+}
+.tv-slide-in-right {
+  animation: tv-slide-in-right 1s cubic-bezier(0.6,0.2,0.2,1) both;
+}
+
+/* Stripe Embedded Checkout rounded corners */
+#checkout {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#checkout iframe {
+  border-radius: 12px;
 }

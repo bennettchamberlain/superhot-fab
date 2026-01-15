@@ -99,3 +99,195 @@ export const pagesSlugs = defineQuery(`
   *[_type == "page" && defined(slug.current)]
   {"slug": slug.current}
 `)
+
+const productFields = /* groq */ `
+  _id,
+  title,
+  "slug": slug.current,
+  shortDescription,
+  description,
+  excerpt,
+  "primaryImage": coalesce(images[isPrimary == true][0].image, null),
+  "thumbnailImage": coalesce(images[isThumbnail == true][0].image, null),
+  "firstImage": coalesce(images[0].image, null),
+  images[]{
+    image,
+    alt,
+    caption,
+    isPrimary,
+    isThumbnail
+  },
+  pricing{
+    basePrice,
+    salePrice,
+    compareAtPrice,
+    currency
+  },
+  status,
+  isFeatured,
+  isNew,
+  isOnSale,
+  publishedAt,
+  categories,
+  tags,
+  brand,
+  collection,
+  "averageRating": coalesce(averageRating, 0),
+  "reviewCount": coalesce(reviewCount, 0)
+`
+
+export const allProductsQuery = defineQuery(`
+  *[_type == "product" && defined(slug.current) && defined(title) && (!defined(status) || (status != "discontinued" && status != "archived"))] | order(publishedAt desc, _updatedAt desc) {
+    ${productFields}
+  }
+`)
+
+export const productQuery = defineQuery(`
+  *[_type == "product" && slug.current == $slug][0] {
+    ${productFields},
+    videos[]{
+      title,
+      videoType,
+      videoFile,
+      youtubeId,
+      vimeoId,
+      videoUrl,
+      thumbnail,
+      duration,
+      isPrimary,
+      autoplay,
+      loop,
+      muted
+    },
+    variants[]{
+      name,
+      sku,
+      options[]{
+        optionType,
+        optionValue
+      },
+      price,
+      salePrice,
+      inventory{
+        quantity,
+        trackInventory,
+        allowBackorder,
+        lowStockThreshold
+      },
+      weight{
+        value,
+        unit
+      },
+      dimensions{
+        length,
+        width,
+        height,
+        unit
+      },
+      image,
+      isDefault,
+      isActive
+    },
+    variantOptions{
+      hasVariants,
+      optionTypes[]{
+        name,
+        values
+      }
+    },
+    inventory{
+      trackInventory,
+      quantity,
+      lowStockThreshold,
+      allowBackorder,
+      sku,
+      barcode
+    },
+    shipping{
+      weight{
+        value,
+        unit
+      },
+      dimensions{
+        length,
+        width,
+        height,
+        unit
+      },
+      requiresShipping,
+      shippingClass,
+      freeShipping
+    },
+    specifications[]{
+      name,
+      value,
+      unit,
+      group,
+      order
+    },
+    reviews[]{
+      author{
+        name,
+        email,
+        verifiedPurchase,
+        location
+      },
+      rating,
+      title,
+      content,
+      pros,
+      cons,
+      images[]{
+        image,
+        alt
+      },
+      date,
+      helpful,
+      isApproved,
+      isFeatured,
+      response{
+        content,
+        date,
+        author
+      }
+    },
+    seo{
+      metaTitle,
+      metaDescription,
+      keywords,
+      ogImage
+    },
+    relatedProducts[]->{
+      title,
+      "slug": slug.current,
+      "primaryImage": images[isPrimary == true][0].image,
+      pricing{
+        basePrice,
+        salePrice,
+        currency
+      }
+    },
+    upsellProducts[]->{
+      title,
+      "slug": slug.current,
+      "primaryImage": images[isPrimary == true][0].image,
+      pricing{
+        basePrice,
+        salePrice,
+        currency
+      }
+    },
+    warranty{
+      hasWarranty,
+      warrantyPeriod,
+      warrantyDescription
+    },
+    careInstructions,
+    notes
+  }
+`)
+
+export const productSlugs = defineQuery(`
+  *[_type == "product" && defined(slug.current)]
+  {"slug": slug.current}
+`)
