@@ -12,21 +12,46 @@ type BlockProps = {
   pageType: string
 }
 
-type BlocksType = {
-  [key: string]: React.FC<BlockProps>
+// Wrapper component for InfoSection to match BlockProps interface
+const InfoSectionWrapper = ({block, index, pageId, pageType}: BlockProps) => {
+  if (block._type !== 'infoSection') {
+    return null
+  }
+  
+  // Access properties that may exist on the block
+  const blockData = block as unknown as {
+    imageUrl?: string
+    videoUrl?: string
+    title?: string
+    text?: string
+    heading?: string
+    subheading?: string
+  }
+  
+  return (
+    <Info
+      imageUrl={blockData.imageUrl}
+      videoUrl={blockData.videoUrl}
+      title={blockData.title || blockData.heading || ''}
+      text={blockData.text || blockData.subheading || ''}
+    />
+  )
 }
 
-const Blocks = {
-  callToAction: Cta,
-  infoSection: Info,
-} as BlocksType
+// Map of block types to their components
+const getBlockComponent = (blockType: string) => {
+  const blocks: Record<string, React.ComponentType<BlockProps>> = {
+    infoSection: InfoSectionWrapper,
+  }
+  return blocks[blockType]
+}
 
 /**
  * Used by the <PageBuilder>, this component renders a the component that matches the block type.
  */
 export default function BlockRenderer({block, index, pageId, pageType}: BlockProps) {
-  // Block does exist
-  if (typeof Blocks[block._type] !== 'undefined') {
+  // Handle callToAction blocks directly
+  if (block._type === 'callToAction') {
     return (
       <div
         key={block._key}
@@ -36,23 +61,33 @@ export default function BlockRenderer({block, index, pageId, pageType}: BlockPro
           path: `pageBuilder[_key=="${block._key}"]`,
         }).toString()}
       >
-        {React.createElement(Blocks[block._type], {
-          key: block._key,
-          block: block,
-          index: index,
-          pageId: pageId,
-          pageType: pageType,
-        })}
+        <Cta block={block} index={index} pageId={pageId} pageType={pageType} />
       </div>
     )
   }
-  // Block doesn't exist yet
-  return React.createElement(
-    () => (
-      <div className="w-full bg-gray-100 text-center text-gray-500 p-20 rounded">
-        A &ldquo;{block._type}&rdquo; block hasn&apos;t been created
+
+  // Check if a component exists for this block type
+  const BlockComponent = getBlockComponent(block._type)
+  
+  if (BlockComponent) {
+    return (
+      <div
+        key={block._key}
+        data-sanity={dataAttr({
+          id: pageId,
+          type: pageType,
+          path: `pageBuilder[_key=="${block._key}"]`,
+        }).toString()}
+      >
+        <BlockComponent block={block} index={index} pageId={pageId} pageType={pageType} />
       </div>
-    ),
-    {key: block._key},
+    )
+  }
+
+  // Block doesn't exist yet
+  return (
+    <div key={block._key} className="w-full bg-gray-100 text-center text-gray-500 p-20 rounded">
+      A &ldquo;{block._type}&rdquo; block hasn&apos;t been created
+    </div>
   )
 }

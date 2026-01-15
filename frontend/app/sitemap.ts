@@ -37,16 +37,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     for (const p of allPostsAndPages.data) {
       switch (p._type) {
-        case 'page':
-          priority = 0.8
-          changeFrequency = 'monthly'
-          url = `${domain}/${p.slug}`
-          break
         case 'post':
           priority = 0.5
           changeFrequency = 'never'
           url = `${domain}/posts/${p.slug}`
           break
+        case 'product':
+          priority = 0.8
+          changeFrequency = 'weekly'
+          url = `${domain}/shop/${p.slug}`
+          break
+        default:
+          continue
       }
       sitemap.push({
         lastModified: p._updatedAt || new Date(),

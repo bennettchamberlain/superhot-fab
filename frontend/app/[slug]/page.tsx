@@ -4,11 +4,21 @@ import Head from 'next/head'
 import PageBuilderPage from '@/app/components/PageBuilder'
 import {sanityFetch} from '@/sanity/lib/live'
 import {getPageQuery, pagesSlugs} from '@/sanity/lib/queries'
-import {GetPageQueryResult} from '@/sanity.types'
 import {PageOnboarding} from '@/app/components/Onboarding'
+import {PageBuilderSection} from '@/sanity/lib/types'
 
 type Props = {
   params: Promise<{slug: string}>
+}
+
+// Define page type locally since the schema may not have page type
+type PageData = {
+  _id: string
+  _type: string
+  name?: string
+  heading?: string
+  subheading?: string
+  pageBuilder?: PageBuilderSection[]
 }
 
 /**
@@ -22,7 +32,7 @@ export async function generateStaticParams() {
     perspective: 'published',
     stega: false,
   })
-  return data
+  return data || []
 }
 
 /**
@@ -38,9 +48,12 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     stega: false,
   })
 
+  // Handle case where page type doesn't exist in schema
+  const pageData = page as PageData | null
+
   return {
-    title: page?.name,
-    description: page?.heading,
+    title: pageData?.name ?? 'Page',
+    description: pageData?.heading ?? '',
   } satisfies Metadata
 }
 
@@ -48,7 +61,10 @@ export default async function Page(props: Props) {
   const params = await props.params
   const [{data: page}] = await Promise.all([sanityFetch({query: getPageQuery, params})])
 
-  if (!page?._id) {
+  // Cast to expected shape since page type may not exist in schema
+  const pageData = page as PageData | null
+
+  if (!pageData?._id) {
     return (
       <div className="py-40">
         <PageOnboarding />
@@ -59,21 +75,21 @@ export default async function Page(props: Props) {
   return (
     <div className="my-12 lg:my-24">
       <Head>
-        <title>{page.heading}</title>
+        <title>{pageData.heading}</title>
       </Head>
       <div className="">
         <div className="container">
           <div className="pb-6 border-b border-gray-100">
             <div className="max-w-3xl">
-              <h1 className="text-4xl text-gray-900 sm:text-5xl lg:text-7xl">{page.heading}</h1>
+              <h1 className="text-4xl text-gray-900 sm:text-5xl lg:text-7xl">{pageData.heading}</h1>
               <p className="mt-4 text-base lg:text-lg leading-relaxed text-gray-600 uppercase font-light">
-                {page.subheading}
+                {pageData.subheading}
               </p>
             </div>
           </div>
         </div>
       </div>
-      <PageBuilderPage page={page as GetPageQueryResult} />
+      <PageBuilderPage page={pageData} />
     </div>
   )
 }

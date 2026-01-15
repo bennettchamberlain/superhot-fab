@@ -70,12 +70,10 @@ export default async function RootLayout({children}: {children: React.ReactNode}
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
-        {/* @ts-expect-error - sonner types incompatible with React 18 */}
         <Toaster />
         {isDraftMode && (
           <>
             <DraftModeToast />
-            {/*  Enable Visual Editing, only to be rendered when Draft Mode is enabled */}
             <VisualEditing />
           </>
         )}

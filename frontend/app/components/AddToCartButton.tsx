@@ -11,19 +11,20 @@ interface AddToCartButtonProps {
     title: string
     slug: string
     pricing?: {
-      basePrice?: number
-      salePrice?: number
-      currency?: string
-    }
+      basePrice?: number | null
+      salePrice?: number | null
+      compareAtPrice?: number | null
+      currency?: string | null
+    } | null
     images?: Array<{
       image?: {
         asset?: {_ref: string}
         _ref?: string
         alt?: string
-      }
-      isPrimary?: boolean
-      isThumbnail?: boolean
-    }>
+      } | null
+      isPrimary?: boolean | null
+      isThumbnail?: boolean | null
+    }> | null
   }
   selectedVariant?: {
     name: string
@@ -37,9 +38,9 @@ export default function AddToCartButton({product, selectedVariant}: AddToCartBut
   const [isAdding, setIsAdding] = useState(false)
 
   const handleAddToCart = () => {
-    const price = selectedVariant?.price || product.pricing?.salePrice || product.pricing?.basePrice
+    const price = selectedVariant?.price ?? product.pricing?.salePrice ?? product.pricing?.basePrice
     
-    if (price === undefined) {
+    if (price === undefined || price === null) {
       toast.error('Price not available')
       return
     }
@@ -47,16 +48,16 @@ export default function AddToCartButton({product, selectedVariant}: AddToCartBut
     setIsAdding(true)
     
     const primaryImage = product.images?.find(img => img.isPrimary || img.isThumbnail)?.image || product.images?.[0]?.image
+    const currency = product.pricing?.currency ?? 'USD'
 
     addToCart({
       _id: product._id,
       title: product.title,
       slug: product.slug,
       price,
-      currency: product.pricing?.currency || 'USD',
-      image: primaryImage,
+      currency,
+      image: primaryImage ?? undefined,
       variant: selectedVariant,
-      quantity: 1,
     })
 
     toast.success(`${product.title} added to cart!`)

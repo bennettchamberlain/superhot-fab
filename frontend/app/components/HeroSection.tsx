@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 
 interface HeroSectionProps {
@@ -88,4 +87,3 @@ export default function HeroSection({ className = "" }: HeroSectionProps) {
     </section>
   );
 }
-// Add tv-mask CSS in globals.css for the bulging square effect. 

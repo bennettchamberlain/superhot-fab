@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import {Metadata} from 'next'
 import {notFound} from 'next/navigation'
+import {type PortableTextBlock} from 'next-sanity'
 import {sanityFetch} from '@/sanity/lib/live'
 import {productQuery, productSlugs} from '@/sanity/lib/queries'
 import SanityImage from '@/app/components/SanityImage'
@@ -53,7 +54,7 @@ export default async function ProductPage(props: Props) {
   }
 
   const primaryImage = product.primaryImage || product.images?.[0]?.image
-  const primaryImageRef = primaryImage?.asset?._ref || primaryImage?._ref
+  const primaryImageRef = primaryImage?.asset?._ref
   const primaryImageAlt = primaryImage?.alt || product.title || 'Product image'
   const price = product.pricing?.salePrice || product.pricing?.basePrice
   const originalPrice = product.pricing?.salePrice ? product.pricing?.basePrice : product.pricing?.compareAtPrice
@@ -173,7 +174,7 @@ export default async function ProductPage(props: Props) {
                     {currencySymbol}{originalPrice.toFixed(2)}
                   </span>
                 )}
-                {product.pricing?.salePrice && (
+                {product.pricing?.salePrice && originalPrice !== null && originalPrice !== undefined && price !== null && price !== undefined && (
                   <span className="bg-[#FA4616] text-white px-2 py-1 rounded text-sm font-bold">
                     SAVE {currencySymbol}{(originalPrice - price).toFixed(2)}
                   </span>
@@ -232,7 +233,7 @@ export default async function ProductPage(props: Props) {
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-yellow-400 mb-6">Description</h2>
             <div className="prose prose-invert max-w-none [&_p]:text-yellow-200 [&_li]:text-yellow-200 [&_strong]:text-yellow-100 [&_em]:text-yellow-200 [&_a]:text-yellow-400">
-              <PortableText value={product.description} />
+              <PortableText value={product.description as unknown as PortableTextBlock[]} />
             </div>
           </section>
         )}

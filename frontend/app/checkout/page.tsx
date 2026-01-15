@@ -2,7 +2,7 @@
 
 import {useEffect, useState, useRef} from 'react'
 import {useCart} from '@/app/context/CartContext'
-import {loadStripe} from '@stripe/stripe-js'
+import {loadStripe, type StripeEmbeddedCheckout} from '@stripe/stripe-js'
 import Link from 'next/link'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
@@ -12,7 +12,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const checkoutRef = useRef<HTMLDivElement>(null)
-  const checkoutInstanceRef = useRef<any>(null)
+  const checkoutInstanceRef = useRef<StripeEmbeddedCheckout | null>(null)
 
   useEffect(() => {
     if (items.length === 0) {

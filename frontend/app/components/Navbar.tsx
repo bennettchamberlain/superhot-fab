@@ -17,4 +17,3 @@ export default function Navbar() {
     </nav>
   );
 }
-// Add tv-mask CSS in globals.css for the bulging square effect. 

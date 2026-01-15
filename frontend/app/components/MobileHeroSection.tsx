@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 
 interface MobileHeroSectionProps {
@@ -87,4 +86,4 @@ export default function MobileHeroSection({ className = "" }: MobileHeroSectionP
       </div>
     </section>
   );
-} 
+}

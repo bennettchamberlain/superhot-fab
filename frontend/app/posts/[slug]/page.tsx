@@ -3,7 +3,6 @@ import {notFound} from 'next/navigation'
 import {type PortableTextBlock} from 'next-sanity'
 import {Suspense} from 'react'
 
-import Avatar from '@/app/components/Avatar'
 import {MorePosts} from '@/app/components/Posts'
 import PortableText from '@/app/components/PortableText'
 import Image from '@/app/components/SanityImage'
@@ -45,10 +44,7 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
   const ogImage = resolveOpenGraphImage(post?.coverImage)
 
   return {
-    authors:
-      post?.author?.firstName && post?.author?.lastName
-        ? [{name: `${post.author.firstName} ${post.author.lastName}`}]
-        : [],
+    authors: post?.author ? [{name: post.author}] : [],
     title: post?.title,
     description: post?.excerpt,
     openGraph: {
@@ -75,8 +71,11 @@ export default async function PostPage(props: Props) {
                 <h1 className="text-4xl text-gray-900 sm:text-5xl lg:text-7xl">{post.title}</h1>
               </div>
               <div className="max-w-3xl flex gap-4 items-center">
-                {post.author && post.author.firstName && post.author.lastName && (
-                  <Avatar person={post.author} date={post.date} />
+                {post.author && (
+                  <span className="text-sm text-gray-600">By {post.author}</span>
+                )}
+                {post.date && (
+                  <time className="text-sm text-gray-500" dateTime={post.date}>{new Date(post.date).toLocaleDateString()}</time>
                 )}
               </div>
             </div>

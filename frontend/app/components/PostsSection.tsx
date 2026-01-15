@@ -72,4 +72,3 @@ export default function PostsSection({ posts, className = "" }: PostsSectionProp
     </section>
   );
 }
-// Add tv-mask CSS in globals.css for the bulging square effect. 
