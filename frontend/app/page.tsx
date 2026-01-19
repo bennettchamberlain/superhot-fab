@@ -19,8 +19,24 @@ import AboutSection from "./components/AboutSection";
 //const options = { next: { revalidate: 30 } };
 
 export const metadata: Metadata = {
-  title: 'We Construct Your Concepts',
-  description: 'We Construct Your Concepts',
+  title: 'Superhot Fabrication - We Construct Your Concepts',
+  description: 'Custom fabrication and metalworking services. From 3D scanning and precision measurement to collaborative design and expert manufacturing. We construct your concepts with quality craftsmanship.',
+  alternates: {
+    canonical: 'https://superhotfab.com',
+  },
+  openGraph: {
+    title: 'Superhot Fabrication - We Construct Your Concepts',
+    description: 'Custom fabrication and metalworking services. From 3D scanning and precision measurement to collaborative design and expert manufacturing.',
+    url: 'https://superhotfab.com',
+    siteName: 'Superhot Fabrication',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Superhot Fabrication - We Construct Your Concepts',
+    description: 'Custom fabrication and metalworking services. From 3D scanning and precision measurement to collaborative design and expert manufacturing.',
+  },
+  keywords: ['custom fabrication', 'metalworking', '3D scanning', 'custom design', 'manufacturing', 'welding', 'metal fabrication'],
 };
 
 export default async function IndexPage() {
@@ -34,8 +50,24 @@ export default async function IndexPage() {
     "/assets/images/Gallery5.jpg",
     "/assets/images/Gallery6.jpg",
   ];
+
+  // Structured data for Organization/LocalBusiness
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Superhot Fabrication",
+    "description": "Custom fabrication and metalworking services. We construct your concepts with precision measurement, 3D design, and expert manufacturing.",
+    "url": "https://superhotfab.com",
+    "priceRange": "$$",
+  };
+
   return (
     <main className="min-h-screen w-full font-sans bg-black relative overflow-hidden">
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{__html: JSON.stringify(structuredData)}}
+      />
       {/* Gradient spots */}
       <div className="fixed inset-0 pointer-events-none">
         {/* Yellow spots */}

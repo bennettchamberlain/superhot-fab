@@ -51,14 +51,34 @@ export async function generateMetadata(): Promise<Metadata> {
     // ignore
   }
   return {
-    metadataBase,
+    metadataBase: metadataBase || new URL('https://superhotfab.com'),
     title: {
       template: `%s | ${title}`,
       default: title,
     },
     description: toPlainText(description),
     openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      url: 'https://superhotfab.com',
+      siteName: title,
       images: ogImage ? [ogImage] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title,
+      description: toPlainText(description),
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   }
 }
