@@ -39,6 +39,20 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   return {
     title: `${product.title} | Shop`,
     description: product.shortDescription || product.excerpt || `Shop ${product.title} at Superhot Fabrication`,
+    alternates: {
+      canonical: `https://superhotfab.com/shop/${params.slug}`,
+    },
+    openGraph: {
+      title: `${product.title} | Shop`,
+      description: product.shortDescription || product.excerpt || `Shop ${product.title} at Superhot Fabrication`,
+      url: `https://superhotfab.com/shop/${params.slug}`,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${product.title} | Shop`,
+      description: product.shortDescription || product.excerpt || `Shop ${product.title} at Superhot Fabrication`,
+    },
   }
 }
 
@@ -65,8 +79,47 @@ export default async function ProductPage(props: Props) {
   const approvedReviews = product.reviews?.filter((r: any) => r.isApproved) || []
   const featuredReviews = approvedReviews.filter((r: any) => r.isFeatured)
 
+  // Structured data for Product schema
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.title,
+    "description": product.shortDescription || product.excerpt || `${product.title} available at Superhot Fabrication`,
+    "brand": {
+      "@type": "Brand",
+      "name": product.brand || "Superhot Fabrication"
+    },
+    "sku": product.inventory?.sku || product._id,
+    "offers": {
+      "@type": "Offer",
+      "url": `https://superhotfab.com/shop/${product.slug}`,
+      "priceCurrency": product.pricing?.currency || "USD",
+      "price": price,
+      "availability": (product.inventory?.quantity ?? 0) > 0
+        ? "https://schema.org/InStock"
+        : product.inventory?.allowBackorder
+        ? "https://schema.org/PreOrder"
+        : "https://schema.org/OutOfStock",
+      "itemCondition": "https://schema.org/NewCondition"
+    },
+    ...(approvedReviews.length > 0 && {
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": product.averageRating,
+        "reviewCount": product.reviewCount,
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    })
+  };
+
   return (
     <main className="min-h-screen w-full font-sans bg-black relative overflow-hidden pt-24">
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{__html: JSON.stringify(structuredData)}}
+      />
       {/* Gradient spots */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute w-[1000px] h-[1000px] bg-[#FFB81C]/[0.03] rounded-full blur-3xl -top-60 -left-60" />

@@ -6,8 +6,22 @@ import SanityImage from '@/app/components/SanityImage'
 import CartIcon from '@/app/components/CartIcon'
 
 export const metadata: Metadata = {
-  title: 'Shop | Superhot Fabrication',
-  description: 'Browse our collection of custom fabrication products',
+  title: 'Shop Custom Fabrication Products',
+  description: 'Browse our collection of custom fabricated products and metalworking solutions. Quality craftsmanship built to your specifications.',
+  alternates: {
+    canonical: 'https://superhotfab.com/shop',
+  },
+  openGraph: {
+    title: 'Shop Custom Fabrication Products | Superhot Fabrication',
+    description: 'Browse our collection of custom fabricated products and metalworking solutions. Quality craftsmanship built to your specifications.',
+    url: 'https://superhotfab.com/shop',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Shop Custom Fabrication Products | Superhot Fabrication',
+    description: 'Browse our collection of custom fabricated products and metalworking solutions.',
+  },
 }
 
 export default async function ShopPage() {
