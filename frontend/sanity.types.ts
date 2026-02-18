@@ -33,7 +33,7 @@ export type Dimensions = {
 }
 
 export type Author = {
-  name: string
+  name?: string
   email?: string
   verifiedPurchase?: boolean
   location?: string
@@ -47,8 +47,8 @@ export type Response = {
 
 export type ProductSpecification = {
   _type: 'productSpecification'
-  name: string
-  value: string
+  name?: string
+  value?: string
   unit?: string
   group?: string
   order?: number
@@ -71,7 +71,7 @@ export type SanityImageAssetReference = {
 export type ProductVideo = {
   _type: 'productVideo'
   title?: string
-  videoType: 'file' | 'youtube' | 'vimeo' | 'url'
+  videoType?: 'file' | 'youtube' | 'vimeo' | 'url'
   videoFile?: {
     asset?: SanityFileAssetReference
     media?: unknown
@@ -98,7 +98,7 @@ export type ProductVideo = {
 
 export type ProductImage = {
   _type: 'productImage'
-  image: {
+  image?: {
     asset?: SanityImageAssetReference
     media?: unknown
     hotspot?: SanityImageHotspot
@@ -115,10 +115,10 @@ export type ProductImage = {
 
 export type ProductReview = {
   _type: 'productReview'
-  author: Author
-  rating: 1 | 2 | 3 | 4 | 5
+  author?: Author
+  rating?: 1 | 2 | 3 | 4 | 5
   title?: string
-  content: string
+  content?: string
   pros?: Array<string>
   cons?: Array<string>
   images?: Array<{
@@ -130,7 +130,7 @@ export type ProductReview = {
     _type: 'image'
     _key: string
   }>
-  date: string
+  date?: string
   helpful?: number
   isApproved?: boolean
   isFeatured?: boolean
@@ -139,11 +139,11 @@ export type ProductReview = {
 
 export type ProductVariant = {
   _type: 'productVariant'
-  name: string
-  sku: string
+  name?: string
+  sku?: string
   options?: Array<{
-    optionType: string
-    optionValue: string
+    optionType?: string
+    optionValue?: string
     _key: string
   }>
   price?: number
@@ -181,7 +181,7 @@ export type Link = {
 export type CallToAction = {
   _type: 'callToAction'
   eyebrow?: string
-  heading: string
+  heading?: string
   body?: BlockContentTextOnly
   button?: Button
   image?: {
@@ -197,18 +197,18 @@ export type CallToAction = {
 
 export type SanityImageCrop = {
   _type: 'sanity.imageCrop'
-  top: number
-  bottom: number
-  left: number
-  right: number
+  top?: number
+  bottom?: number
+  left?: number
+  right?: number
 }
 
 export type SanityImageHotspot = {
   _type: 'sanity.imageHotspot'
-  x: number
-  y: number
-  height: number
-  width: number
+  x?: number
+  y?: number
+  height?: number
+  width?: number
 }
 
 export type Button = {
@@ -288,13 +288,13 @@ export type Product = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title: string
-  slug: Slug
+  title?: string
+  slug?: Slug
   shortDescription?: string
   description?: BlockContent
   excerpt?: string
   pricing?: {
-    basePrice: number
+    basePrice?: number
     salePrice?: number
     compareAtPrice?: number
     currency?: 'USD' | 'EUR' | 'GBP' | 'CAD' | 'AUD'
@@ -320,7 +320,7 @@ export type Product = {
   variantOptions?: {
     hasVariants?: boolean
     optionTypes?: Array<{
-      name: string
+      name?: string
       values?: Array<string>
       _key: string
     }>
@@ -376,7 +376,7 @@ export type Product = {
       _type: 'image'
     }
   }
-  status: 'draft' | 'active' | 'out_of_stock' | 'discontinued' | 'archived'
+  status?: 'draft' | 'active' | 'out_of_stock' | 'discontinued' | 'archived'
   isFeatured?: boolean
   isNew?: boolean
   isOnSale?: boolean
@@ -402,8 +402,23 @@ export type Product = {
 
 export type Slug = {
   _type: 'slug'
-  current: string
+  current?: string
   source?: string
+}
+
+export type MusicPlaylist = {
+  _id: string
+  _type: 'musicPlaylist'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title?: string
+  tracks?: Array<{
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+    _key: string
+  }>
 }
 
 export type Settings = {
@@ -412,7 +427,7 @@ export type Settings = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title: string
+  title?: string
   description?: Array<{
     children?: Array<{
       marks?: Array<string>
@@ -451,8 +466,8 @@ export type Post = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title: string
-  slug: Slug
+  title?: string
+  slug?: Slug
   content?: BlockContent
   excerpt?: string
   coverImage?: {
@@ -514,7 +529,7 @@ export type AssistInstructionContextReference = {
 
 export type SanityAssistInstructionContext = {
   _type: 'sanity.assist.instruction.context'
-  reference: AssistInstructionContextReference
+  reference?: AssistInstructionContextReference
 }
 
 export type AssistInstructionContext = {
@@ -542,7 +557,7 @@ export type AssistInstructionContext = {
 
 export type SanityAssistInstructionUserInput = {
   _type: 'sanity.assist.instruction.userInput'
-  message: string
+  message?: string
   description?: string
 }
 
@@ -625,9 +640,9 @@ export type SanityImagePalette = {
 
 export type SanityImageDimensions = {
   _type: 'sanity.imageDimensions'
-  height: number
-  width: number
-  aspectRatio: number
+  height?: number
+  width?: number
+  aspectRatio?: number
 }
 
 export type SanityImageMetadata = {
@@ -637,6 +652,7 @@ export type SanityImageMetadata = {
   palette?: SanityImagePalette
   lqip?: string
   blurHash?: string
+  thumbHash?: string
   hasAlpha?: boolean
   isOpaque?: boolean
 }
@@ -725,6 +741,7 @@ export type AllSanitySchemaTypes =
   | ProductReference
   | Product
   | Slug
+  | MusicPlaylist
   | Settings
   | Post
   | SanityAssistInstructionTask
@@ -751,6 +768,12 @@ export type AllSanitySchemaTypes =
 
 export declare const internalGroqTypeReferenceTo: unique symbol
 
+type ArrayOf<T> = Array<
+  T & {
+    _key: string
+  }
+>
+
 // Source: sanity/lib/queries.ts
 // Variable: settingsQuery
 // Query: *[_type == "settings"][0]
@@ -760,7 +783,7 @@ export type SettingsQueryResult = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title: string
+  title?: string
   description?: Array<{
     children?: Array<{
       marks?: Array<string>
@@ -794,6 +817,18 @@ export type SettingsQueryResult = {
 } | null
 
 // Source: sanity/lib/queries.ts
+// Variable: musicPlaylistQuery
+// Query: *[_type == "musicPlaylist"][0]{    _id,    "tracks": tracks[]{      _key,      "title": asset->originalFilename,      "url": asset->url    }  }
+export type MusicPlaylistQueryResult = {
+  _id: string
+  tracks: Array<{
+    _key: string
+    title: string | null
+    url: string | null
+  }> | null
+} | null
+
+// Source: sanity/lib/queries.ts
 // Variable: getPageQuery
 // Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {        ...,        button {          ...,            link {      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }      }        }      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }          }        }      },    },  }
 export type GetPageQueryResult = null
@@ -803,12 +838,12 @@ export type GetPageQueryResult = null
 // Query: *[(_type == "post" || _type == "product") && defined(slug.current)] | order(_type asc) {    "slug": slug.current,    _type,    _updatedAt,  }
 export type SitemapDataResult = Array<
   | {
-      slug: string
+      slug: string | null
       _type: 'post'
       _updatedAt: string
     }
   | {
-      slug: string
+      slug: string | null
       _type: 'product'
       _updatedAt: string
     }
@@ -820,8 +855,8 @@ export type SitemapDataResult = Array<
 export type AllPostsQueryResult = Array<{
   _id: string
   status: 'draft' | 'published'
-  title: string
-  slug: string
+  title: string | 'Untitled'
+  slug: string | null
   excerpt: string | null
   coverImage: {
     asset?: SanityImageAssetReference
@@ -841,8 +876,8 @@ export type AllPostsQueryResult = Array<{
 export type MorePostsQueryResult = Array<{
   _id: string
   status: 'draft' | 'published'
-  title: string
-  slug: string
+  title: string | 'Untitled'
+  slug: string | null
   excerpt: string | null
   coverImage: {
     asset?: SanityImageAssetReference
@@ -895,8 +930,8 @@ export type PostQueryResult = {
   > | null
   _id: string
   status: 'draft' | 'published'
-  title: string
-  slug: string
+  title: string | 'Untitled'
+  slug: string | null
   excerpt: string | null
   coverImage: {
     asset?: SanityImageAssetReference
@@ -914,7 +949,7 @@ export type PostQueryResult = {
 // Variable: postPagesSlugs
 // Query: *[_type == "post" && defined(slug.current)]  {"slug": slug.current}
 export type PostPagesSlugsResult = Array<{
-  slug: string
+  slug: string | null
 }>
 
 // Source: sanity/lib/queries.ts
@@ -927,8 +962,8 @@ export type PagesSlugsResult = Array<never>
 // Query: *[_type == "product" && defined(slug.current) && defined(title) && (!defined(status) || (status != "discontinued" && status != "archived"))] | order(publishedAt desc, _updatedAt desc) {      _id,  title,  "slug": slug.current,  shortDescription,  description,  excerpt,  "primaryImage": coalesce(images[isPrimary == true][0].image, null),  "thumbnailImage": coalesce(images[isThumbnail == true][0].image, null),  "firstImage": coalesce(images[0].image, null),  images[]{    image,    alt,    caption,    isPrimary,    isThumbnail  },  pricing{    basePrice,    salePrice,    compareAtPrice,    currency  },  status,  isFeatured,  isNew,  isOnSale,  publishedAt,  categories,  tags,  brand,  collection,  "averageRating": coalesce(averageRating, 0),  "reviewCount": coalesce(reviewCount, 0)  }
 export type AllProductsQueryResult = Array<{
   _id: string
-  title: string
-  slug: string
+  title: string | null
+  slug: string | null
   shortDescription: string | null
   description: BlockContent | null
   excerpt: string | null
@@ -964,19 +999,19 @@ export type AllProductsQueryResult = Array<{
       crop?: SanityImageCrop
       alt?: string
       _type: 'image'
-    }
+    } | null
     alt: null
     caption: string | null
     isPrimary: boolean | null
     isThumbnail: boolean | null
   }> | null
   pricing: {
-    basePrice: number
+    basePrice: number | null
     salePrice: number | null
     compareAtPrice: number | null
     currency: 'AUD' | 'CAD' | 'EUR' | 'GBP' | 'USD' | null
   } | null
-  status: 'active' | 'archived' | 'discontinued' | 'draft' | 'out_of_stock'
+  status: 'active' | 'archived' | 'discontinued' | 'draft' | 'out_of_stock' | null
   isFeatured: boolean | null
   isNew: boolean | null
   isOnSale: boolean | null
@@ -994,8 +1029,8 @@ export type AllProductsQueryResult = Array<{
 // Query: *[_type == "product" && slug.current == $slug][0] {      _id,  title,  "slug": slug.current,  shortDescription,  description,  excerpt,  "primaryImage": coalesce(images[isPrimary == true][0].image, null),  "thumbnailImage": coalesce(images[isThumbnail == true][0].image, null),  "firstImage": coalesce(images[0].image, null),  images[]{    image,    alt,    caption,    isPrimary,    isThumbnail  },  pricing{    basePrice,    salePrice,    compareAtPrice,    currency  },  status,  isFeatured,  isNew,  isOnSale,  publishedAt,  categories,  tags,  brand,  collection,  "averageRating": coalesce(averageRating, 0),  "reviewCount": coalesce(reviewCount, 0),    videos[]{      title,      videoType,      videoFile,      youtubeId,      vimeoId,      videoUrl,      thumbnail,      duration,      isPrimary,      autoplay,      loop,      muted    },    variants[]{      name,      sku,      options[]{        optionType,        optionValue      },      price,      salePrice,      inventory{        quantity,        trackInventory,        allowBackorder,        lowStockThreshold      },      weight{        value,        unit      },      dimensions{        length,        width,        height,        unit      },      image,      isDefault,      isActive    },    variantOptions{      hasVariants,      optionTypes[]{        name,        values      }    },    inventory{      trackInventory,      quantity,      lowStockThreshold,      allowBackorder,      sku,      barcode    },    shipping{      weight{        value,        unit      },      dimensions{        length,        width,        height,        unit      },      requiresShipping,      shippingClass,      freeShipping    },    specifications[]{      name,      value,      unit,      group,      order    },    reviews[]{      author{        name,        email,        verifiedPurchase,        location      },      rating,      title,      content,      pros,      cons,      images[]{        image,        alt      },      date,      helpful,      isApproved,      isFeatured,      response{        content,        date,        author      }    },    seo{      metaTitle,      metaDescription,      keywords,      ogImage    },    relatedProducts[]->{      title,      "slug": slug.current,      "primaryImage": images[isPrimary == true][0].image,      pricing{        basePrice,        salePrice,        currency      }    },    upsellProducts[]->{      title,      "slug": slug.current,      "primaryImage": images[isPrimary == true][0].image,      pricing{        basePrice,        salePrice,        currency      }    },    warranty{      hasWarranty,      warrantyPeriod,      warrantyDescription    },    careInstructions,    notes  }
 export type ProductQueryResult = {
   _id: string
-  title: string
-  slug: string
+  title: string | null
+  slug: string | null
   shortDescription: string | null
   description: BlockContent | null
   excerpt: string | null
@@ -1031,19 +1066,19 @@ export type ProductQueryResult = {
       crop?: SanityImageCrop
       alt?: string
       _type: 'image'
-    }
+    } | null
     alt: null
     caption: string | null
     isPrimary: boolean | null
     isThumbnail: boolean | null
   }> | null
   pricing: {
-    basePrice: number
+    basePrice: number | null
     salePrice: number | null
     compareAtPrice: number | null
     currency: 'AUD' | 'CAD' | 'EUR' | 'GBP' | 'USD' | null
   } | null
-  status: 'active' | 'archived' | 'discontinued' | 'draft' | 'out_of_stock'
+  status: 'active' | 'archived' | 'discontinued' | 'draft' | 'out_of_stock' | null
   isFeatured: boolean | null
   isNew: boolean | null
   isOnSale: boolean | null
@@ -1056,7 +1091,7 @@ export type ProductQueryResult = {
   reviewCount: number | 0
   videos: Array<{
     title: string | null
-    videoType: 'file' | 'url' | 'vimeo' | 'youtube'
+    videoType: 'file' | 'url' | 'vimeo' | 'youtube' | null
     videoFile: {
       asset?: SanityFileAssetReference
       media?: unknown
@@ -1080,11 +1115,11 @@ export type ProductQueryResult = {
     muted: boolean | null
   }> | null
   variants: Array<{
-    name: string
-    sku: string
+    name: string | null
+    sku: string | null
     options: Array<{
-      optionType: string
-      optionValue: string
+      optionType: string | null
+      optionValue: string | null
     }> | null
     price: number | null
     salePrice: number | null
@@ -1118,7 +1153,7 @@ export type ProductQueryResult = {
   variantOptions: {
     hasVariants: boolean | null
     optionTypes: Array<{
-      name: string
+      name: string | null
       values: Array<string> | null
     }> | null
   } | null
@@ -1146,29 +1181,29 @@ export type ProductQueryResult = {
     freeShipping: boolean | null
   } | null
   specifications: Array<{
-    name: string
-    value: string
+    name: string | null
+    value: string | null
     unit: string | null
     group: string | null
     order: number | null
   }> | null
   reviews: Array<{
     author: {
-      name: string
+      name: string | null
       email: string | null
       verifiedPurchase: boolean | null
       location: string | null
-    }
-    rating: 1 | 2 | 3 | 4 | 5
+    } | null
+    rating: 1 | 2 | 3 | 4 | 5 | null
     title: string | null
-    content: string
+    content: string | null
     pros: Array<string> | null
     cons: Array<string> | null
     images: Array<{
       image: null
       alt: string | null
     }> | null
-    date: string
+    date: string | null
     helpful: number | null
     isApproved: boolean | null
     isFeatured: boolean | null
@@ -1191,8 +1226,8 @@ export type ProductQueryResult = {
     } | null
   } | null
   relatedProducts: Array<{
-    title: string
-    slug: string
+    title: string | null
+    slug: string | null
     primaryImage: {
       asset?: SanityImageAssetReference
       media?: unknown
@@ -1202,14 +1237,14 @@ export type ProductQueryResult = {
       _type: 'image'
     } | null
     pricing: {
-      basePrice: number
+      basePrice: number | null
       salePrice: number | null
       currency: 'AUD' | 'CAD' | 'EUR' | 'GBP' | 'USD' | null
     } | null
   }> | null
   upsellProducts: Array<{
-    title: string
-    slug: string
+    title: string | null
+    slug: string | null
     primaryImage: {
       asset?: SanityImageAssetReference
       media?: unknown
@@ -1219,7 +1254,7 @@ export type ProductQueryResult = {
       _type: 'image'
     } | null
     pricing: {
-      basePrice: number
+      basePrice: number | null
       salePrice: number | null
       currency: 'AUD' | 'CAD' | 'EUR' | 'GBP' | 'USD' | null
     } | null
@@ -1237,7 +1272,7 @@ export type ProductQueryResult = {
 // Variable: productSlugs
 // Query: *[_type == "product" && defined(slug.current)]  {"slug": slug.current}
 export type ProductSlugsResult = Array<{
-  slug: string
+  slug: string | null
 }>
 
 // Query TypeMap
@@ -1245,6 +1280,7 @@ import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult
+    '\n  *[_type == "musicPlaylist"][0]{\n    _id,\n    "tracks": tracks[]{\n      _key,\n      "title": asset->originalFilename,\n      "url": asset->url\n    }\n  }\n': MusicPlaylistQueryResult
     '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult
     '\n  *[(_type == "post" || _type == "product") && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  author,\n\n  }\n': AllPostsQueryResult

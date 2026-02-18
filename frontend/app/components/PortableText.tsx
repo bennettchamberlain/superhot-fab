@@ -32,7 +32,7 @@ export default function CustomPortableText({
               id={value.asset._ref}
               alt={value.alt || ''}
               width={672}
-              crop={value.crop}
+              crop={value.crop ? { top: value.crop.top ?? 0, bottom: value.crop.bottom ?? 0, left: value.crop.left ?? 0, right: value.crop.right ?? 0 } : undefined}
               mode="cover"
               className="rounded-sm"
             />

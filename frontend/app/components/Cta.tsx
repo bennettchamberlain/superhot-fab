@@ -59,7 +59,16 @@ export default function CTA({block}: CtaProps) {
               id={image.asset._ref}
               alt="Demo image"
               width={704}
-              crop={image.crop}
+              crop={
+                image.crop
+                  ? {
+                      top: image.crop.top ?? 0,
+                      bottom: image.crop.bottom ?? 0,
+                      left: image.crop.left ?? 0,
+                      right: image.crop.right ?? 0,
+                    }
+                  : undefined
+              }
               mode="cover"
               className="rounded-sm"
             />

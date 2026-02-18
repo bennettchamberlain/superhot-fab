@@ -29,8 +29,8 @@ export default function Avatar({person, date, small = false}: Props) {
             className="h-full rounded-full"
             height={small ? 32 : 48}
             width={small ? 32 : 48}
-            hotspot={picture.hotspot}
-            crop={picture.crop}
+            hotspot={picture.hotspot ? { x: picture.hotspot.x ?? 0.5, y: picture.hotspot.y ?? 0.5 } : undefined}
+            crop={picture.crop ? { top: picture.crop.top ?? 0, bottom: picture.crop.bottom ?? 0, left: picture.crop.left ?? 0, right: picture.crop.right ?? 0 } : undefined}
             mode="cover"
           />
         </div>

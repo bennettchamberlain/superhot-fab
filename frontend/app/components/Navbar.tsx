@@ -1,19 +1,22 @@
-import Image from "next/image";
 import Link from "next/link";
+import ShimmerText from "./ShimmerText";
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 w-full flex items-center justify-between px-6 py-4 bg-black/90 border-b-4 border-yellow-400 shadow-lg backdrop-blur-sm">
-      <Link href="/" className="flex items-center gap-3">
-        <Image src="/assets/images/superhotfin.png" alt="Superhot Fabrication Logo" width={56} height={56} className="object-contain" />
-        <span className="text-2xl font-bold bg-gradient-to-r from-[#FFB81C] via-[#FA4616] to-[#FFB81C] bg-clip-text text-transparent tracking-wide">SUPERHOT FABRICATION</span>
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full flex items-center justify-between px-6 py-4 bg-black/60 border-b border-white/15 backdrop-blur-sm">
+      <ShimmerText
+        href="/"
+        lines={["SUPERHOT", "FABRICATION"]}
+        color="orange"
+        className="flex items-center"
+        textClassName="text-3xl font-black uppercase leading-none tracking-wider drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
+      />
+      <Link
+        href="/contact"
+        className="bg-[#FFD000] hover:bg-[#FFE033] active:bg-[#FFBA00] text-black font-black uppercase tracking-widest text-lg px-6 py-2 rounded-none shadow-[0_0_24px_rgba(255,208,0,0.7)] hover:shadow-[0_0_36px_rgba(255,208,0,0.9)] transition-all duration-200"
+      >
+        CONTACT
       </Link>
-      <div className="hidden md:flex gap-8 text-2xl uppercase font-extrabold">
-        <Link href="/shop" className="bg-gradient-to-r from-[#FFB81C] to-[#FA4616] bg-clip-text text-transparent hover:opacity-80 transition">SHOP</Link>
-        <a href="#gallery" className="bg-gradient-to-r from-[#FFB81C] to-[#FA4616] bg-clip-text text-transparent hover:opacity-80 transition">GALLERY</a>
-        <a href="#process" className="bg-gradient-to-r from-[#FFB81C] to-[#FA4616] bg-clip-text text-transparent hover:opacity-80 transition">PROCESS</a>
-        <a href="#contact" className="bg-gradient-to-r from-[#FFB81C] to-[#FA4616] bg-clip-text text-transparent hover:opacity-80 transition">CONTACT</a>
-      </div>
     </nav>
   );
 }

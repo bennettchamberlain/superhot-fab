@@ -2,6 +2,17 @@ import {defineQuery} from 'next-sanity'
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
 
+export const musicPlaylistQuery = defineQuery(`
+  *[_type == "musicPlaylist"][0]{
+    _id,
+    "tracks": tracks[]{
+      _key,
+      "title": asset->originalFilename,
+      "url": asset->url
+    }
+  }
+`)
+
 const postFields = /* groq */ `
   _id,
   "status": select(_originalId in path("drafts.**") => "draft", "published"),
