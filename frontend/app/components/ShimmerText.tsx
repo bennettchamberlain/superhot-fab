@@ -15,6 +15,13 @@ interface ShimmerTextProps {
   className?: string;
   textClassName?: string;
   onClick?: () => void;
+  /**
+   * Animation speed in noise-units per second.
+   * Default (0.15) matches the apparent speed on the landing page where
+   * multiple instances run concurrently and the frame rate is naturally lower.
+   * Higher values animate faster.
+   */
+  speed?: number;
 }
 
 export default function ShimmerText({
@@ -25,6 +32,7 @@ export default function ShimmerText({
   className = '',
   textClassName = '',
   onClick,
+  speed = 0.15,
 }: ShimmerTextProps) {
   const spanRef = useRef<HTMLSpanElement>(null);
   const rafRef = useRef<number>(0);
@@ -49,8 +57,6 @@ export default function ShimmerText({
 
     const arr: number[] = new Array(w2h);
     for (let k = 0; k < w2h; ++k) arr[k] = Math.random() * 1.5 - 0.5;
-
-    /** DARKER hues + bright highlights — deep saturation, glow only on peaks */
     const color = (v: number) => {
       v = Math.min(Math.max(v, 0.2), 1);
       v = Math.pow(v, 1.5);              // darken base hues / push midtones down
@@ -84,9 +90,16 @@ export default function ShimmerText({
 
     const oct = (x: number, y: number) => p(x * 3.0, y * 4.0) + p(x * 4.0, y * 5.0) * 0.5;
 
-    const draw = () => {
+    let lastTime = -1;
+
+    const draw = (now: number) => {
       rafRef.current = window.requestAnimationFrame(draw);
-      t += inc;
+      // Time-based: advance t by `speed` units per second regardless of frame rate.
+      // Capped at 50ms to avoid a large jump when the tab regains focus.
+      if (lastTime >= 0) {
+        t += Math.min((now - lastTime) / 1000, 0.05) * speed;
+      }
+      lastTime = now;
 
       for (let x = 1; x >= 0; x -= inc) {
         for (let y = 1; y >= 0; y -= inc) {
@@ -119,10 +132,10 @@ export default function ShimmerText({
       }
     };
 
-    draw();
+    rafRef.current = window.requestAnimationFrame(draw);
 
     return () => window.cancelAnimationFrame(rafRef.current);
-  }, [color]);
+  }, [color, speed]);
 
   const content = lines ? lines.join('\n') : (label ?? '');
 

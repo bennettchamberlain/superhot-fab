@@ -44,7 +44,7 @@ export default function IndexPage() {
           height: '100vh',
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(-60deg)',
+          transform: 'rotate(-66.4deg)',
         }} />
         <div className="hidden md:block" style={{
           position: 'absolute',
@@ -54,7 +54,7 @@ export default function IndexPage() {
           height: '100vh',
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(-60deg)',
+          transform: 'rotate(-65deg)',
         }} />
         {/* Down-right diagonal — anchored exactly at clip-path center */}
         <div className="md:hidden" style={{
@@ -65,7 +65,7 @@ export default function IndexPage() {
           height: '100vh',
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(60deg)',
+          transform: 'rotate(66.4deg)',
         }} />
         <div className="hidden md:block" style={{
           position: 'absolute',
@@ -75,7 +75,7 @@ export default function IndexPage() {
           height: '100vh',
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(60deg)',
+          transform: 'rotate(65deg)',
         }} />
       </div>
 
