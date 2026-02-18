@@ -8,8 +8,8 @@ import {toast} from 'sonner'
 interface AddToCartButtonProps {
   product: {
     _id: string
-    title: string
-    slug: string
+    title: string | null
+    slug: string | null
     pricing?: {
       basePrice?: number | null
       salePrice?: number | null
@@ -52,15 +52,15 @@ export default function AddToCartButton({product, selectedVariant}: AddToCartBut
 
     addToCart({
       _id: product._id,
-      title: product.title,
-      slug: product.slug,
+      title: product.title ?? '',
+      slug: product.slug ?? '',
       price,
       currency,
       image: primaryImage ?? undefined,
       variant: selectedVariant,
     })
 
-    toast.success(`${product.title} added to cart!`)
+    toast.success(`${product.title ?? 'Item'} added to cart!`)
     
     setTimeout(() => {
       setIsAdding(false)

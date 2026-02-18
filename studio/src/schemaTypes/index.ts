@@ -3,6 +3,7 @@ import {product} from './documents/product'
 import {callToAction} from './objects/callToAction'
 import {infoSection} from './objects/infoSection'
 import {settings} from './singletons/settings'
+import {musicPlaylist} from './singletons/musicPlaylist'
 import {link} from './objects/link'
 import {blockContent} from './objects/blockContent'
 import button from './objects/button'
@@ -18,6 +19,7 @@ import {productSpecification} from './objects/productSpecification'
 export const schemaTypes = [
   // Singletons
   settings,
+  musicPlaylist,
   // Documents
   post,
   product,

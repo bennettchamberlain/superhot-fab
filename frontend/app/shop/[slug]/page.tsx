@@ -18,7 +18,7 @@ export async function generateStaticParams() {
     perspective: 'published',
     stega: false,
   })
-  return slugs?.map((item: {slug: string}) => ({slug: item.slug})) || []
+  return slugs?.flatMap((item: {slug: string | null}) => item.slug ? [{slug: item.slug}] : []) || []
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
@@ -164,7 +164,7 @@ export default async function ProductPage(props: Props) {
             )}
 
             {/* Price */}
-            {price !== undefined && (
+            {price != null && (
               <div className="flex items-baseline gap-3">
                 <span className="text-4xl font-bold text-yellow-400">
                   {currencySymbol}{price.toFixed(2)}

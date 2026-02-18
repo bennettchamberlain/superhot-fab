@@ -143,7 +143,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "email": {
           "type": "objectAttribute",
@@ -217,14 +217,14 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "value": {
           "type": "objectAttribute",
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "unit": {
           "type": "objectAttribute",
@@ -353,7 +353,7 @@
               }
             ]
           },
-          "optional": false
+          "optional": true
         },
         "videoFile": {
           "type": "objectAttribute",
@@ -571,7 +571,7 @@
               }
             }
           },
-          "optional": false
+          "optional": true
         },
         "caption": {
           "type": "objectAttribute",
@@ -630,7 +630,7 @@
             "type": "inline",
             "name": "author"
           },
-          "optional": false
+          "optional": true
         },
         "rating": {
           "type": "objectAttribute",
@@ -659,7 +659,7 @@
               }
             ]
           },
-          "optional": false
+          "optional": true
         },
         "title": {
           "type": "objectAttribute",
@@ -673,7 +673,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "pros": {
           "type": "objectAttribute",
@@ -768,7 +768,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "helpful": {
           "type": "objectAttribute",
@@ -820,14 +820,14 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "sku": {
           "type": "objectAttribute",
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "options": {
           "type": "objectAttribute",
@@ -841,14 +841,14 @@
                   "value": {
                     "type": "string"
                   },
-                  "optional": false
+                  "optional": true
                 },
                 "optionValue": {
                   "type": "objectAttribute",
                   "value": {
                     "type": "string"
                   },
-                  "optional": false
+                  "optional": true
                 }
               },
               "rest": {
@@ -1085,7 +1085,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "body": {
           "type": "objectAttribute",
@@ -1205,28 +1205,28 @@
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "bottom": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "left": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "right": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         }
       }
     }
@@ -1249,28 +1249,28 @@
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "y": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "height": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "width": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         }
       }
     }
@@ -1863,7 +1863,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "slug": {
         "type": "objectAttribute",
@@ -1871,7 +1871,7 @@
           "type": "inline",
           "name": "slug"
         },
-        "optional": false
+        "optional": true
       },
       "shortDescription": {
         "type": "objectAttribute",
@@ -1905,7 +1905,7 @@
               "value": {
                 "type": "number"
               },
-              "optional": false
+              "optional": true
             },
             "salePrice": {
               "type": "objectAttribute",
@@ -2065,7 +2065,7 @@
                       "value": {
                         "type": "string"
                       },
-                      "optional": false
+                      "optional": true
                     },
                     "values": {
                       "type": "objectAttribute",
@@ -2473,7 +2473,7 @@
             }
           ]
         },
-        "optional": false
+        "optional": true
       },
       "isFeatured": {
         "type": "objectAttribute",
@@ -2611,7 +2611,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "source": {
           "type": "objectAttribute",
@@ -2620,6 +2620,95 @@
           },
           "optional": true
         }
+      }
+    }
+  },
+  {
+    "name": "musicPlaylist",
+    "type": "document",
+    "attributes": {
+      "_id": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_type": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string",
+          "value": "musicPlaylist"
+        }
+      },
+      "_createdAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_updatedAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_rev": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "tracks": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "asset": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "inline",
+                  "name": "sanity.fileAsset.reference"
+                },
+                "optional": true
+              },
+              "media": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "unknown"
+                },
+                "optional": true
+              },
+              "_type": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string",
+                  "value": "file"
+                }
+              }
+            },
+            "rest": {
+              "type": "object",
+              "attributes": {
+                "_key": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "optional": true
       }
     }
   },
@@ -2663,7 +2752,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "description": {
         "type": "objectAttribute",
@@ -2942,7 +3031,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "slug": {
         "type": "objectAttribute",
@@ -2950,7 +3039,7 @@
           "type": "inline",
           "name": "slug"
         },
-        "optional": false
+        "optional": true
       },
       "content": {
         "type": "objectAttribute",
@@ -3266,7 +3355,7 @@
             "type": "inline",
             "name": "assist.instruction.context.reference"
           },
-          "optional": false
+          "optional": true
         }
       }
     }
@@ -3445,7 +3534,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "description": {
           "type": "objectAttribute",
@@ -3915,21 +4004,21 @@
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "width": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "aspectRatio": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         }
       }
     }
@@ -3979,6 +4068,13 @@
           "optional": true
         },
         "blurHash": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "thumbHash": {
           "type": "objectAttribute",
           "value": {
             "type": "string"

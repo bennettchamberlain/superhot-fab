@@ -111,11 +111,26 @@ export default {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-10px)' },
         },
+        'shader-red': {
+          '0%, 100%': { opacity: '0.15', transform: 'translate(0, 0) scale(1)' },
+          '50%': { opacity: '0.45', transform: 'translate(40px, 60px) scale(1.15)' },
+        },
+        'shader-orange': {
+          '0%, 100%': { opacity: '0.1', transform: 'translate(0, 0) scale(1)' },
+          '50%': { opacity: '0.35', transform: 'translate(-50px, -30px) scale(1.2)' },
+        },
+        'shader-yellow': {
+          '0%, 100%': { opacity: '0.08', transform: 'translate(0, 0) scale(1)' },
+          '50%': { opacity: '0.28', transform: 'translate(30px, -50px) scale(1.1)' },
+        },
       },
       animation: {
         float: 'float 6s ease-in-out infinite',
         'float-slow': 'float-slow 8s ease-in-out infinite',
         'float-slower': 'float-slower 10s ease-in-out infinite',
+        'shader-red': 'shader-red 10s ease-in-out infinite',
+        'shader-orange': 'shader-orange 10s ease-in-out infinite',
+        'shader-yellow': 'shader-yellow 10s ease-in-out infinite',
       },
     },
   },

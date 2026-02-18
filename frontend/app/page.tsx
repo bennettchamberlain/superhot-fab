@@ -1,104 +1,168 @@
 import { Metadata } from 'next';
-//import Link from "next/link";
-//import { type Post } from "./components/types";
-import HeroSection from "./components/HeroSection";
-import MobileHeroSection from "./components/MobileHeroSection";
-import GallerySection from "./components/GallerySection";
-//import PostsSection from "./components/PostsSection";
-import ContactSection from "./components/ContactSection";
-import InfoSection from "./components/InfoSection";
-import AboutSection from "./components/AboutSection";
-
-//import { client } from "@/sanity/client";
-
-//const POSTS_QUERY = `*[
-//  _type == "post"
-//  && defined(slug.current)
-//]|order(publishedAt desc)[0...12]{_id, title, slug, publishedAt, image, body}`;
-
-//const options = { next: { revalidate: 30 } };
+import Image from 'next/image';
+import Link from 'next/link';
+import NeuroBackground from './components/NeuroBackground';
+import ShimmerText from './components/ShimmerText';
+import TiltCard from './components/TiltCard';
 
 export const metadata: Metadata = {
-  title: 'We Construct Your Concepts',
+  title: 'Superhot Fabrication — We Construct Your Concepts',
   description: 'We Construct Your Concepts',
 };
 
-export default async function IndexPage() {
-  //const posts = await client.fetch<Post[]>(POSTS_QUERY, {}, options);
-  // Placeholder gallery images
-  const galleryImages = [
-    "/assets/images/Gallery1.JPG",
-    "/assets/images/Gallery2.JPG",
-    "/assets/images/Gallery3.JPG",
-    "/assets/images/Gallery4.JPG",
-    "/assets/images/Gallery5.jpg",
-    "/assets/images/Gallery6.jpg",
-  ];
+export default function IndexPage() {
   return (
-    <main className="min-h-screen w-full font-sans bg-black relative overflow-hidden">
-      {/* Gradient spots */}
-      <div className="fixed inset-0 pointer-events-none">
-        {/* Yellow spots */}
-        <div className="absolute w-[1000px] h-[1000px] bg-[#FFB81C]/[0.03] rounded-full blur-3xl animate-float-slow -top-60 -left-60" />
-        <div className="absolute w-[800px] h-[800px] bg-[#FFB81C]/[0.02] rounded-full blur-3xl animate-float-slower top-1/3 left-1/4" />
-        
-        {/* Orange spots */}
-        <div className="absolute w-[1200px] h-[1200px] bg-[#FA4616]/[0.03] rounded-full blur-3xl animate-float -bottom-80 right-0" />
-        <div className="absolute w-[900px] h-[900px] bg-[#FA4616]/[0.02] rounded-full blur-3xl animate-float-slow top-1/2 -right-40" />
-        
-        {/* Red spots */}
-        <div className="absolute w-[1100px] h-[1100px] bg-[#DA291C]/[0.03] rounded-full blur-3xl animate-float-slower -left-40 top-1/4" />
-        <div className="absolute w-[700px] h-[700px] bg-[#DA291C]/[0.02] rounded-full blur-3xl animate-float bottom-1/4 left-1/3" />
-        
-        {/* Mixed color spots */}
-        <div className="absolute w-[1300px] h-[1300px] bg-gradient-to-br from-[#FFB81C]/[0.02] via-[#FA4616]/[0.02] to-[#DA291C]/[0.02] rounded-full blur-3xl animate-float-slow -top-40 right-1/4" />
-        <div className="absolute w-[950px] h-[950px] bg-gradient-to-tr from-[#DA291C]/[0.02] via-[#FA4616]/[0.02] to-[#FFB81C]/[0.02] rounded-full blur-3xl animate-float-slower bottom-1/3 -right-20" />
+    <main className="relative w-full bg-black overflow-hidden" style={{ height: '100vh' }}>
+      {/* Neural noise WebGL background — warm red/orange/yellow palette */}
+      <NeuroBackground blur={16} />
+
+      {/* Radiating lines from center — above tilt cards, below logo */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 4 }}>
+        {/* Vertical up — mobile stops at 43%, desktop stops at 53% */}
+        <div className="md:hidden" style={{
+          position: 'absolute',
+          left: 'calc(50% - 0.5px)',
+          top: 0,
+          width: 1,
+          height: '43%',
+          background: 'rgba(255,255,255,0.35)',
+        }} />
+        <div className="hidden md:block" style={{
+          position: 'absolute',
+          left: 'calc(50% - 0.5px)',
+          top: 0,
+          width: 1,
+          height: '53%',
+          background: 'rgba(255,255,255,0.35)',
+        }} />
+        {/* Down-left diagonal — anchored exactly at clip-path center */}
+        <div className="md:hidden" style={{
+          position: 'absolute',
+          left: 'calc(50% - 0.5px)',
+          top: '43%',
+          width: 1,
+          height: '100vh',
+          background: 'rgba(255,255,255,0.35)',
+          transformOrigin: '50% 0%',
+          transform: 'rotate(-60deg)',
+        }} />
+        <div className="hidden md:block" style={{
+          position: 'absolute',
+          left: 'calc(50% - 0.5px)',
+          top: '53%',
+          width: 1,
+          height: '100vh',
+          background: 'rgba(255,255,255,0.35)',
+          transformOrigin: '50% 0%',
+          transform: 'rotate(-60deg)',
+        }} />
+        {/* Down-right diagonal — anchored exactly at clip-path center */}
+        <div className="md:hidden" style={{
+          position: 'absolute',
+          left: 'calc(50% - 0.5px)',
+          top: '43%',
+          width: 1,
+          height: '100vh',
+          background: 'rgba(255,255,255,0.35)',
+          transformOrigin: '50% 0%',
+          transform: 'rotate(60deg)',
+        }} />
+        <div className="hidden md:block" style={{
+          position: 'absolute',
+          left: 'calc(50% - 0.5px)',
+          top: '53%',
+          width: 1,
+          height: '100vh',
+          background: 'rgba(255,255,255,0.35)',
+          transformOrigin: '50% 0%',
+          transform: 'rotate(60deg)',
+        }} />
       </div>
 
-      <div className="w-full">
-        {/* Responsive Hero Section */}
-        <div className="hidden md:block">
-          <HeroSection className="tv-slide-in-left" />
+      {/* ── Desktop tilt card sections ── */}
+      <div className="hidden md:block absolute inset-0" style={{ zIndex: 3 }}>
+        {/* Left section — PROCESS */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 53%, 50% 0%, 0% 0%, 0% 100%, 19.2% 100%)' }}>
+          <TiltCard className="" />
+          <Link href="/process" className="absolute inset-0 z-[2] cursor-pointer" />
+          <div className="absolute pointer-events-none" style={{ top: 'calc(50% - 150px)', left: 'calc(50% - 370px)', transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="PROCESS" color="yellow" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+          </div>
         </div>
-        <div className="block md:hidden">
-          <MobileHeroSection className="tv-slide-in-left" />
+        {/* Right section — GALLERY */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 53%, 50% 0%, 100% 0%, 100% 100%, 80.8% 100%)' }}>
+          <TiltCard className="" />
+          <Link href="/gallery" className="absolute inset-0 z-[2] cursor-pointer" />
+          <div className="absolute pointer-events-none" style={{ top: 'calc(50% - 150px)', right: 'calc(50% - 370px)', transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="GALLERY" color="orange" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+          </div>
         </div>
-        <AboutSection className="tv-slide-in-right" />
-        <section id="process" className="w-full flex flex-col items-center py-16">
-          <h2 className="text-4xl font-bold mb-10 text-large-upper bg-gradient-to-r from-[#FFB81C] to-[#FA4616] bg-clip-text text-transparent">Process</h2>
-          <InfoSection
-            title="Measure"
-            videoUrl="/assets/images/MEASUREFINAL.mp4"
-            text="Full commercial interiors? That closet under the stairs? We make products that fit their spaces.
-We use 3D scanning to get an exact model of your environment to the millimeter. This makes it easier to plan right, avoid surprises, and create perfect fits. It&apos;s fast, accurate, and gives us a solid foundation to start designing."
-          />
-          <div className="h-6" />
-          <InfoSection
-            title="Design"
-            videoUrl="/assets/images/design-2.mov"
-            text="From napkin sketch to polished concept—we work it out together.
-Whether you show up with a photo or just a problem, we&apos;ll help shape the idea. We iterate in 3D, show you options, make revisions fast, and never settle for &quot;good enough.&quot;  
-You get to see it, move it, tweak it—before anything&apos;s built."
-          />
-          <div className="h-6" />
-          <InfoSection
-            title="Build"
-            videoUrl="/assets/images/BUILD.mp4"
-            text="Then we make it for real. No compromises.
- We build everything in-house—no outsourcing, no dilution.
- What you see in the render is what you get in the space.
- Clean welds, solid materials, sharp details. Built once, built right."
-          />
-        </section>
-        <GallerySection images={galleryImages} className="tv-slide-in-right" />
-        <div className="max-w-4xl mx-auto px-2 md:px-8">
-          <ContactSection />
+        {/* Bottom section — SHOP */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 53%, 19.2% 100%, 80.8% 100%)' }}>
+          <TiltCard className="" />
+          <Link href="/shop" className="absolute inset-0 z-[2] cursor-pointer" />
+          <div className="absolute pointer-events-none" style={{ top: 'calc(50% + 200px)', left: '50%', transform: 'translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="SHOP" color="red" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+          </div>
         </div>
       </div>
-      {/* Copyright Footer */}
-      <footer className="w-full py-4 text-center text-yellow-400/80 text-sm border-t border-yellow-400/20">
-        <p>© {new Date().getFullYear()} Superhot Fabrication. All rights reserved.</p>
-      </footer>
+
+      {/* ── Mobile tilt card sections ── */}
+      <div className="md:hidden absolute inset-0" style={{ zIndex: 3 }}>
+        {/* Left section — PROCESS */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 43%, 50% 0%, 0% 0%, 0% 55%)' }}>
+          <TiltCard className="" />
+          <Link href="/process" className="absolute inset-0 z-[2] cursor-pointer" />
+          <div className="absolute pointer-events-none" style={{ top: '30%', left: 16, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="PROCESS" color="yellow" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+          </div>
+        </div>
+        {/* Right section — GALLERY */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 43%, 50% 0%, 100% 0%, 100% 55%)' }}>
+          <TiltCard className="" />
+          <Link href="/gallery" className="absolute inset-0 z-[2] cursor-pointer" />
+          <div className="absolute pointer-events-none" style={{ top: '30%', right: 16, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="GALLERY" color="orange" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+          </div>
+        </div>
+        {/* Bottom section — SHOP */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 43%, 0% 55%, 0% 100%, 100% 100%, 100% 55%)' }}>
+          <TiltCard className="" />
+          <Link href="/shop" className="absolute inset-0 z-[2] cursor-pointer" />
+          <div className="absolute pointer-events-none" style={{ bottom: '30%', left: '50%', transform: 'translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="SHOP" color="red" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+          </div>
+        </div>
+      </div>
+
+      {/* Centered logo — independent, above tilt cards */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ zIndex: 10 }}>
+        <div className="md:hidden -translate-y-16">
+          <Image
+            src="/assets/images/superhotfin.png"
+            alt="Superhot Fabrication Logo"
+            width={80}
+            height={80}
+            className="object-contain drop-shadow-[0_0_32px_rgba(255,184,28,0.4)] animate-float"
+            priority
+          />
+        </div>
+        <div className="hidden md:block">
+          <Image
+            src="/assets/images/superhotfin.png"
+            alt="Superhot Fabrication Logo"
+            width={200}
+            height={200}
+            className="object-contain drop-shadow-[0_0_40px_rgba(255,184,28,0.4)] animate-float"
+            priority
+          />
+        </div>
+      </div>
+
+      {/* Tagline bottom-center */}
+      <p className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-sm tracking-[0.3em] uppercase text-white/30 font-light">
+        We Construct Your Concepts
+      </p>
     </main>
   );
 }
