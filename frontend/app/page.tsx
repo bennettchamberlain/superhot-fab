@@ -16,17 +16,10 @@ export default function IndexPage() {
       {/* Neural noise WebGL background — warm red/orange/yellow palette */}
       <NeuroBackground blur={16} />
 
-      {/* Radiating lines from center — above tilt cards, below logo */}
+      {/* Radiating lines from center — aligned with clip-path triangle edges */}
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 4 }}>
-        {/* Vertical up — mobile stops at 43%, desktop stops at 53% */}
-        <div className="md:hidden" style={{
-          position: 'absolute',
-          left: 'calc(50% - 0.5px)',
-          top: 0,
-          width: 1,
-          height: '43%',
-          background: 'rgba(255,255,255,0.35)',
-        }} />
+        {/* ─── DESKTOP LINES ─── */}
+        {/* Vertical up — from center (50%, 53%) to top */}
         <div className="hidden md:block" style={{
           position: 'absolute',
           left: 'calc(50% - 0.5px)',
@@ -35,70 +28,91 @@ export default function IndexPage() {
           height: '53%',
           background: 'rgba(255,255,255,0.35)',
         }} />
-        {/* Down-left diagonal — anchored exactly at clip-path center */}
-        <div className="md:hidden" style={{
-          position: 'absolute',
-          left: 'calc(50% - 0.5px)',
-          top: '43%',
-          width: 1,
-          height: '100vh',
-          background: 'rgba(255,255,255,0.35)',
-          transformOrigin: '50% 0%',
-          transform: 'rotate(-60deg)',
-        }} />
+        
+        {/* Down-left diagonal — from center (50%, 53%) to bottom-left corner (19.2%, 100%) */}
+        {/* Angle: atan2(47, -30.8) ≈ -56.8° from vertical down */}
         <div className="hidden md:block" style={{
           position: 'absolute',
           left: 'calc(50% - 0.5px)',
           top: '53%',
           width: 1,
-          height: '100vh',
+          height: '150vh', // long enough to reach corner
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(-60deg)',
+          transform: 'rotate(-56.8deg)',
         }} />
-        {/* Down-right diagonal — anchored exactly at clip-path center */}
-        <div className="md:hidden" style={{
-          position: 'absolute',
-          left: 'calc(50% - 0.5px)',
-          top: '43%',
-          width: 1,
-          height: '100vh',
-          background: 'rgba(255,255,255,0.35)',
-          transformOrigin: '50% 0%',
-          transform: 'rotate(60deg)',
-        }} />
+        
+        {/* Down-right diagonal — from center (50%, 53%) to bottom-right corner (80.8%, 100%) */}
+        {/* Angle: atan2(47, 30.8) ≈ 56.8° from vertical down */}
         <div className="hidden md:block" style={{
           position: 'absolute',
           left: 'calc(50% - 0.5px)',
           top: '53%',
           width: 1,
-          height: '100vh',
+          height: '150vh',
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(60deg)',
+          transform: 'rotate(56.8deg)',
+        }} />
+
+        {/* ─── MOBILE LINES ─── */}
+        {/* Vertical up */}
+        <div className="md:hidden" style={{
+          position: 'absolute',
+          left: 'calc(50% - 0.5px)',
+          top: 0,
+          width: 1,
+          height: '43%',
+          background: 'rgba(255,255,255,0.35)',
+        }} />
+        
+        {/* Mobile: from (50%, 43%) to (0%, 55%) - shallow angle */}
+        {/* Angle: atan2(12, -50) ≈ -13.5° from vertical down */}
+        <div className="md:hidden" style={{
+          position: 'absolute',
+          left: 'calc(50% - 0.5px)',
+          top: '43%',
+          width: 1,
+          height: '150vh',
+          background: 'rgba(255,255,255,0.35)',
+          transformOrigin: '50% 0%',
+          transform: 'rotate(-13.5deg)',
+        }} />
+        
+        {/* Mobile: from (50%, 43%) to (100%, 55%) */}
+        {/* Angle: atan2(12, 50) ≈ 13.5° from vertical down */}
+        <div className="md:hidden" style={{
+          position: 'absolute',
+          left: 'calc(50% - 0.5px)',
+          top: '43%',
+          width: 1,
+          height: '150vh',
+          background: 'rgba(255,255,255,0.35)',
+          transformOrigin: '50% 0%',
+          transform: 'rotate(13.5deg)',
         }} />
       </div>
 
       {/* ── Desktop tilt card sections ── */}
       <div className="hidden md:block absolute inset-0" style={{ zIndex: 3 }}>
-        {/* Left section — PROCESS */}
-        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 53%, 50% 0%, 0% 0%, 0% 100%, 19.2% 100%)' }}>
+        {/* Left section — PROCESS — perfect triangle left side */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 53%, 50% 0%, 0% 0%, 0% 100%, 19.2% 100%, 50% 53%)' }}>
           <TiltCard className="" />
           <Link href="/process" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: 'calc(50% - 150px)', left: 'calc(50% - 370px)', transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
             <ShimmerText label="PROCESS" color="yellow" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
-        {/* Right section — GALLERY */}
-        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 53%, 50% 0%, 100% 0%, 100% 100%, 80.8% 100%)' }}>
+        {/* Right section — GALLERY — perfect triangle right side */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 53%, 50% 0%, 100% 0%, 100% 100%, 80.8% 100%, 50% 53%)' }}>
           <TiltCard className="" />
           <Link href="/gallery" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: 'calc(50% - 150px)', right: 'calc(50% - 370px)', transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
             <ShimmerText label="GALLERY" color="orange" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
-        {/* Bottom section — SHOP */}
-        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 53%, 19.2% 100%, 80.8% 100%)' }}>
+        {/* Bottom section — SHOP — perfect triangle bottom */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 53%, 19.2% 100%, 80.8% 100%, 50% 53%)' }}>
           <TiltCard className="" />
           <Link href="/shop" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: 'calc(50% + 200px)', left: '50%', transform: 'translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
@@ -109,24 +123,24 @@ export default function IndexPage() {
 
       {/* ── Mobile tilt card sections ── */}
       <div className="md:hidden absolute inset-0" style={{ zIndex: 3 }}>
-        {/* Left section — PROCESS */}
-        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 43%, 50% 0%, 0% 0%, 0% 55%)' }}>
+        {/* Left section — PROCESS — stops at left diagonal line */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 43%, 50% 0%, 0% 0%, 0% 55%, 50% 43%)' }}>
           <TiltCard className="" />
           <Link href="/process" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: '30%', left: 16, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
             <ShimmerText label="PROCESS" color="yellow" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
-        {/* Right section — GALLERY */}
-        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 43%, 50% 0%, 100% 0%, 100% 55%)' }}>
+        {/* Right section — GALLERY — stops at right diagonal line */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 43%, 50% 0%, 100% 0%, 100% 55%, 50% 43%)' }}>
           <TiltCard className="" />
           <Link href="/gallery" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: '30%', right: 16, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
             <ShimmerText label="GALLERY" color="orange" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
-        {/* Bottom section — SHOP */}
-        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 43%, 0% 55%, 0% 100%, 100% 100%, 100% 55%)' }}>
+        {/* Bottom section — SHOP — extends up to meet center point */}
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 43%, 0% 55%, 0% 100%, 100% 100%, 100% 55%, 50% 43%)' }}>
           <TiltCard className="" />
           <Link href="/shop" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ bottom: '30%', left: '50%', transform: 'translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
