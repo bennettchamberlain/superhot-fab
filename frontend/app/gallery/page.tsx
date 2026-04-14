@@ -1,37 +1,81 @@
-import { Metadata } from 'next';
-import GallerySection from '@/app/components/GallerySection';
+import {Metadata} from 'next'
+import {sanityFetch} from '@/sanity/lib/live'
+import {MosaicGallery} from '@/app/components/MosaicGallery'
+
+// GROQ query to fetch all galleries
+const GALLERIES_QUERY = `*[_type == "gallery"] | order(publishedAt desc) {
+  _id,
+  title,
+  slug,
+  description,
+  layout,
+  columns,
+  showOnHomepage,
+  publishedAt,
+  items[] {
+    _key,
+    type,
+    image {
+      asset->,
+      alt
+    },
+    video {
+      asset->
+    },
+    videoThumbnail {
+      asset->
+    },
+    title,
+    description,
+    tags,
+    featured
+  }
+}`
 
 export const metadata: Metadata = {
-  title: 'Gallery | Superhot Fabrication',
-  description: 'See our custom fabrication work',
-};
+  title: 'Gallery - Superhot Fabrication',
+  description: 'View our portfolio of custom fabrication projects',
+}
 
-const galleryImages = [
-  '/assets/images/Gallery1.JPG',
-  '/assets/images/Gallery2.JPG',
-  '/assets/images/Gallery3.JPG',
-  '/assets/images/Gallery4.JPG',
-  '/assets/images/Gallery5.jpg',
-  '/assets/images/Gallery6.jpg',
-];
+export default async function GalleryListPage() {
+  const {data: galleries} = await sanityFetch({
+    query: GALLERIES_QUERY,
+  })
 
-export default function GalleryPage() {
+  if (!galleries || galleries.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-24">
+        <h1 className="text-4xl font-bold mb-8">Gallery</h1>
+        <p className="text-gray-400">No galleries found. Create one in Sanity Studio!</p>
+      </div>
+    )
+  }
+
   return (
-    <main className="min-h-screen w-full font-sans bg-black relative overflow-hidden pt-8">
-      {/* Background gradient spots */}
-      <div className="fixed inset-0 pointer-events-none" aria-hidden>
-        <div className="absolute w-[1000px] h-[1000px] bg-[#FA4616]/[0.04] rounded-full blur-3xl animate-shader-orange -top-60 -left-60" />
-        <div className="absolute w-[1200px] h-[1200px] bg-[#FFB81C]/[0.03] rounded-full blur-3xl animate-shader-yellow -bottom-80 right-0" />
-        <div className="absolute w-[1100px] h-[1100px] bg-[#DA291C]/[0.03] rounded-full blur-3xl animate-shader-red -left-40 top-1/4" />
-      </div>
+    <div className="container mx-auto px-4 py-24">
+      <h1 className="text-5xl font-bold mb-4">Gallery</h1>
+      <p className="text-xl text-gray-400 mb-16">
+        Explore our custom fabrication projects
+      </p>
 
-      <div className="relative z-10 container mx-auto px-4 md:px-8 py-8">
-        <GallerySection images={galleryImages} />
-      </div>
+      <div className="space-y-24">
+        {galleries.map((gallery: any) => (
+          <section key={gallery._id} id={gallery.slug.current} className="scroll-mt-24">
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold mb-2">{gallery.title}</h2>
+              {gallery.description && (
+                <p className="text-gray-400 text-lg">{gallery.description}</p>
+              )}
+            </div>
 
-      <footer className="relative z-10 w-full py-4 text-center text-yellow-400/50 text-sm border-t border-yellow-400/10 mt-8">
-        <p>© {new Date().getFullYear()} Superhot Fabrication. All rights reserved.</p>
-      </footer>
-    </main>
-  );
+            <MosaicGallery
+              items={gallery.items}
+              layout={gallery.layout}
+              columns={gallery.columns}
+            />
+          </section>
+        ))}
+      </div>
+    </div>
+  )
 }

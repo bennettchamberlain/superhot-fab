@@ -1,5 +1,6 @@
 import {post} from './documents/post'
 import {product} from './documents/product'
+import {gallery} from './documents/gallery'
 import {callToAction} from './objects/callToAction'
 import {infoSection} from './objects/infoSection'
 import {settings} from './singletons/settings'
@@ -13,6 +14,7 @@ import {productReview} from './objects/productReview'
 import {productImage} from './objects/productImage'
 import {productVideo} from './objects/productVideo'
 import {productSpecification} from './objects/productSpecification'
+import {galleryItem} from './objects/galleryItem'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/studio/schema-types
 
@@ -23,6 +25,7 @@ export const schemaTypes = [
   // Documents
   post,
   product,
+  gallery,
   // Objects
   button,
   blockContent,
@@ -30,6 +33,7 @@ export const schemaTypes = [
   infoSection,
   callToAction,
   link,
+  galleryItem,
   // Product-related objects
   productVariant,
   productReview,
