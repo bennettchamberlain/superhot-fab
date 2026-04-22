@@ -1,7 +1,7 @@
 import {Metadata} from 'next'
 import {notFound} from 'next/navigation'
 import {sanityFetch} from '@/sanity/lib/live'
-import {InfiniteGallery} from '@/app/components/InfiniteGallery'
+import {MosaicGallery, GalleryItem} from '@/app/components/MosaicGallery'
 
 const GALLERY_QUERY = `*[_type == "gallery" && slug.current == $slug][0] {
   _id,
@@ -21,6 +21,29 @@ const GALLERY_QUERY = `*[_type == "gallery" && slug.current == $slug][0] {
 }`
 
 type Props = {params: Promise<{slug: string}>}
+
+// Cycle through sizes to create a natural mosaic rhythm
+const MOSAIC_SIZES: GalleryItem['size'][] = [
+  'wide', 'small', 'small',
+  'small', 'large', 'small',
+  'small', 'small', 'wide',
+  'medium', 'small', 'small',
+  'small', 'wide', 'small',
+  'large', 'small', 'small',
+]
+
+function toMosaicItems(media: any[]): GalleryItem[] {
+  return media.map((item, i) => ({
+    _key: item._key,
+    type: item.mediaType === 'video' ? 'video' : 'image',
+    size: MOSAIC_SIZES[i % MOSAIC_SIZES.length],
+    image: item.image,
+    video: item.video,
+    videoThumbnail: item.videoThumbnail,
+    title: item.name,
+    description: item.description,
+  }))
+}
 
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const {slug} = await params
@@ -51,9 +74,13 @@ export default async function GalleryPage({params}: Props) {
         )}
       </div>
 
-      {/* Full-screen infinite canvas */}
+      {/* Mosaic */}
       {gallery.media?.length > 0 ? (
-        <InfiniteGallery items={gallery.media} />
+        <MosaicGallery
+          items={toMosaicItems(gallery.media)}
+          columns={4}
+          gap="small"
+        />
       ) : (
         <p className="px-6 py-12 text-zinc-500">No media in this gallery yet.</p>
       )}
