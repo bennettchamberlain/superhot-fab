@@ -1,18 +1,25 @@
-import {ImageIcon, PlayIcon} from '@sanity/icons'
+import {ImageIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
 /**
- * Gallery item object — drag & drop reorderable, supports images and videos.
- * Each item has optional title, description, tags, and a mosaic size for layout control.
+ * A single piece of media — image or video.
+ * Auto-named on creation, renameable, swappable, with optional description.
  */
 export const galleryItem = defineType({
   name: 'galleryItem',
-  title: 'Gallery Item',
+  title: 'Media Item',
   icon: ImageIcon,
   type: 'object',
   fields: [
     defineField({
-      name: 'type',
+      name: 'name',
+      title: 'Name',
+      type: 'string',
+      description: 'Auto-generated from filename — rename it here if you like',
+    }),
+
+    defineField({
+      name: 'mediaType',
       title: 'Media Type',
       type: 'string',
       options: {
@@ -32,21 +39,13 @@ export const galleryItem = defineType({
       type: 'image',
       options: {
         hotspot: true,
-        aiAssist: {imageDescriptionField: 'alt'},
+        storeOriginalFilename: true,
       },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alt text',
-          description: 'Describe the image for accessibility and SEO',
-        },
-      ],
-      hidden: ({parent}) => parent?.type === 'video',
+      hidden: ({parent}) => parent?.mediaType !== 'image',
       validation: (rule) =>
         rule.custom((value, context) => {
-          if ((context.parent as any)?.type === 'image' && !value) {
-            return 'An image file is required'
+          if ((context.parent as any)?.mediaType === 'image' && !value?.asset) {
+            return 'Please upload an image'
           }
           return true
         }),
@@ -57,11 +56,11 @@ export const galleryItem = defineType({
       title: 'Video',
       type: 'file',
       options: {accept: 'video/*'},
-      hidden: ({parent}) => parent?.type === 'image',
+      hidden: ({parent}) => parent?.mediaType !== 'video',
       validation: (rule) =>
         rule.custom((value, context) => {
-          if ((context.parent as any)?.type === 'video' && !value) {
-            return 'A video file is required'
+          if ((context.parent as any)?.mediaType === 'video' && !value?.asset) {
+            return 'Please upload a video'
           }
           return true
         }),
@@ -71,70 +70,34 @@ export const galleryItem = defineType({
       name: 'videoThumbnail',
       title: 'Video Thumbnail',
       type: 'image',
-      description: 'Cover image shown before the video plays',
       options: {hotspot: true},
-      hidden: ({parent}) => parent?.type === 'image',
-    }),
-
-    // ── Mosaic size ──────────────────────────────────────────────────────────
-    defineField({
-      name: 'size',
-      title: 'Mosaic Size',
-      type: 'string',
-      description: 'Controls how much space this item takes in the mosaic layout',
-      options: {
-        list: [
-          {title: 'Small  (1×1)', value: 'small'},
-          {title: 'Medium (1×2 tall)', value: 'medium'},
-          {title: 'Wide   (2×1)', value: 'wide'},
-          {title: 'Large  (2×2)', value: 'large'},
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'small',
-    }),
-
-    // ── Optional details (shown in lightbox) ─────────────────────────────────
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      description: 'Optional — shown in the lightbox',
+      description: 'Optional cover image shown before the video plays',
+      hidden: ({parent}) => parent?.mediaType !== 'video',
     }),
 
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
-      rows: 4,
-      description: 'Optional — shown in the lightbox when you click into an item',
-    }),
-
-    defineField({
-      name: 'tags',
-      title: 'Tags',
-      type: 'array',
-      of: [{type: 'string'}],
-      options: {layout: 'tags'},
-      description: 'Optional labels for categorisation',
+      rows: 3,
+      description: 'Optional — shown in the lightbox',
     }),
   ],
 
+  // Auto-set name from uploaded asset filename on create
   preview: {
     select: {
-      title: 'title',
-      type: 'type',
-      size: 'size',
+      name: 'name',
+      mediaType: 'mediaType',
       image: 'image',
       videoThumbnail: 'videoThumbnail',
     },
-    prepare({title, type, size, image, videoThumbnail}) {
-      const media = type === 'video' ? videoThumbnail ?? image : image
-      const icon = type === 'video' ? '🎥' : '🖼'
-      const sizeLabel = size ? ` · ${size}` : ''
+    prepare({name, mediaType, image, videoThumbnail}) {
+      const media = mediaType === 'video' ? videoThumbnail ?? image : image
+      const icon = mediaType === 'video' ? '🎥' : '🖼'
       return {
-        title: title || 'Untitled',
-        subtitle: `${icon} ${type}${sizeLabel}`,
+        title: name || 'Untitled',
+        subtitle: `${icon} ${mediaType ?? 'image'}`,
         media,
       }
     },

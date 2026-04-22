@@ -2,7 +2,8 @@ import {ImagesIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
 /**
- * Gallery document — full-width mosaic gallery with drag-and-drop ordering.
+ * Gallery — a named collection of media items (images + videos).
+ * Drag to reorder. Click any item to rename, swap media, or add a description.
  */
 export const gallery = defineType({
   name: 'gallery',
@@ -21,7 +22,6 @@ export const gallery = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      description: 'URL path for this gallery  (e.g. /gallery/my-gallery)',
       options: {
         source: 'title',
         maxLength: 96,
@@ -37,49 +37,12 @@ export const gallery = defineType({
       description: 'Optional — shown at the top of the gallery page',
     }),
 
-    // ── Items — drag & drop ──────────────────────────────────────────────────
     defineField({
-      name: 'items',
-      title: 'Gallery Items',
+      name: 'media',
+      title: 'Media',
       type: 'array',
       of: [{type: 'galleryItem'}],
-      description:
-        'Drag items to reorder. Click any item to set its size, add a title, description, or tags.',
-      validation: (rule) => rule.required().min(1),
-    }),
-
-    // ── Layout options ───────────────────────────────────────────────────────
-    defineField({
-      name: 'columns',
-      title: 'Base Columns',
-      type: 'number',
-      description: 'Number of base columns in the mosaic grid (desktop)',
-      options: {list: [2, 3, 4, 5]},
-      initialValue: 3,
-      validation: (rule) => rule.required().min(2).max(5),
-    }),
-
-    defineField({
-      name: 'gap',
-      title: 'Gap between items',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'None', value: 'none'},
-          {title: 'Small (4px)', value: 'small'},
-          {title: 'Medium (8px)', value: 'medium'},
-          {title: 'Large (16px)', value: 'large'},
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'small',
-    }),
-
-    defineField({
-      name: 'showOnHomepage',
-      title: 'Show on Homepage',
-      type: 'boolean',
-      initialValue: false,
+      description: 'Drop images and videos here. Drag to reorder. Click any item to edit.',
     }),
 
     defineField({
@@ -93,15 +56,15 @@ export const gallery = defineType({
   preview: {
     select: {
       title: 'title',
-      items: 'items',
-      media: 'items.0.image',
+      media: 'media',
+      firstImage: 'media.0.image',
     },
-    prepare({title, items, media}) {
-      const count = items?.length ?? 0
+    prepare({title, media, firstImage}) {
+      const count = media?.length ?? 0
       return {
         title,
         subtitle: `${count} item${count !== 1 ? 's' : ''}`,
-        media,
+        media: firstImage,
       }
     },
   },

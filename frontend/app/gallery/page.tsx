@@ -1,26 +1,21 @@
 import {Metadata} from 'next'
 import {sanityFetch} from '@/sanity/lib/live'
-import {MosaicGallery} from '@/app/components/MosaicGallery'
+import {InfiniteGallery} from '@/app/components/InfiniteGallery'
 
 const GALLERIES_QUERY = `*[_type == "gallery"] | order(publishedAt desc) {
   _id,
   title,
   slug,
   description,
-  columns,
-  gap,
-  showOnHomepage,
   publishedAt,
-  items[] {
+  media[] {
     _key,
-    type,
-    size,
+    name,
+    mediaType,
     image { asset->, alt },
     video { asset-> },
     videoThumbnail { asset-> },
-    title,
-    description,
-    tags
+    description
   }
 }`
 
@@ -36,39 +31,43 @@ export default async function GalleryListPage() {
     return (
       <div className="px-6 py-24">
         <h1 className="text-4xl font-bold mb-4">Gallery</h1>
-        <p className="text-zinc-400">No galleries yet — create one in Sanity Studio.</p>
+        <p className="text-zinc-400">No galleries yet.</p>
       </div>
     )
   }
 
+  // Show the first gallery as a full-screen canvas, list others below
+  const [primary, ...rest] = galleries as any[]
+
   return (
-    <div className="py-20">
-      {/* Page header */}
-      <div className="px-6 mb-16">
-        <h1 className="text-5xl font-bold tracking-tight">Gallery</h1>
-      </div>
+    <div>
+      {/* Primary gallery — full viewport infinite canvas */}
+      <section>
+        {primary.media?.length > 0 && (
+          <InfiniteGallery items={primary.media} />
+        )}
+      </section>
 
-      {/* Galleries — full width, stacked */}
-      <div className="space-y-20">
-        {galleries.map((gallery: any) => (
-          <section key={gallery._id} id={gallery.slug?.current}>
-            {/* Section header */}
-            <div className="px-6 mb-4">
-              <h2 className="text-2xl font-bold">{gallery.title}</h2>
-              {gallery.description && (
-                <p className="text-zinc-400 mt-1">{gallery.description}</p>
+      {/* Additional galleries */}
+      {rest.length > 0 && (
+        <div className="bg-black">
+          {rest.map((gallery: any) => (
+            <section key={gallery._id} className="py-16">
+              <div className="px-6 mb-6">
+                <h2 className="text-2xl font-bold text-white">{gallery.title}</h2>
+                {gallery.description && (
+                  <p className="text-zinc-400 mt-1">{gallery.description}</p>
+                )}
+              </div>
+              {gallery.media?.length > 0 && (
+                <div className="h-[70vh]">
+                  <InfiniteGallery items={gallery.media} />
+                </div>
               )}
-            </div>
-
-            {/* Full-width mosaic */}
-            <MosaicGallery
-              items={gallery.items ?? []}
-              columns={gallery.columns ?? 3}
-              gap={gallery.gap ?? 'small'}
-            />
-          </section>
-        ))}
-      </div>
+            </section>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
