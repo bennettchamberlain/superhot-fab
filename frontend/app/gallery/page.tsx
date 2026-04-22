@@ -1,6 +1,6 @@
 import {Metadata} from 'next'
 import {sanityFetch} from '@/sanity/lib/live'
-import {MosaicGallery, GalleryItem} from '@/app/components/MosaicGallery'
+import {JustifiedMosaic} from '@/app/components/JustifiedMosaic'
 
 const GALLERIES_QUERY = `*[_type == "gallery"] | order(publishedAt desc) {
   _id,
@@ -12,9 +12,18 @@ const GALLERIES_QUERY = `*[_type == "gallery"] | order(publishedAt desc) {
     _key,
     name,
     mediaType,
-    image { asset->{_id, url, metadata{dimensions}}, alt, hotspot, crop },
+    image {
+      asset->{ _id, url, metadata{ dimensions } },
+      alt,
+      hotspot,
+      crop
+    },
     video { asset-> },
-    videoThumbnail { asset-> },
+    videoThumbnail {
+      asset->{ _id, metadata{ dimensions } },
+      hotspot,
+      crop
+    },
     description
   }
 }`
@@ -22,28 +31,6 @@ const GALLERIES_QUERY = `*[_type == "gallery"] | order(publishedAt desc) {
 export const metadata: Metadata = {
   title: 'Gallery — Superhot Fabrication',
   description: 'Portfolio of custom fabrication projects',
-}
-
-const MOSAIC_SIZES: GalleryItem['size'][] = [
-  'wide', 'small', 'small',
-  'small', 'large', 'small',
-  'small', 'small', 'wide',
-  'medium', 'small', 'small',
-  'small', 'wide', 'small',
-  'large', 'small', 'small',
-]
-
-function toMosaicItems(media: any[]): GalleryItem[] {
-  return media.map((item, i) => ({
-    _key: item._key,
-    type: item.mediaType === 'video' ? 'video' : 'image',
-    size: MOSAIC_SIZES[i % MOSAIC_SIZES.length],
-    image: item.image,
-    video: item.video,
-    videoThumbnail: item.videoThumbnail,
-    title: item.name,
-    description: item.description,
-  }))
 }
 
 export default async function GalleryListPage() {
@@ -69,10 +56,11 @@ export default async function GalleryListPage() {
             )}
           </div>
           {gallery.media?.length > 0 && (
-            <MosaicGallery
-              items={toMosaicItems(gallery.media)}
-              columns={4}
-              gap="small"
+            <JustifiedMosaic
+              items={gallery.media}
+              targetRowHeight={320}
+              maxCropFraction={0.18}
+              gap={3}
             />
           )}
         </section>
