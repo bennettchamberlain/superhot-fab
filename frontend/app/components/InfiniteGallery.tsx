@@ -135,12 +135,13 @@ export function InfiniteGallery({items}: Props) {
   }
 
   return (
-    <div className="relative w-full overflow-hidden bg-black" style={{height: '100svh'}}>
+    <div className="relative w-full overflow-hidden bg-black" style={{height: '100svh', overscrollBehavior: 'none'}}>
 
       {/* ── Grid canvas ─────────────────────────────────────────────────── */}
       <div
         ref={canvasRef}
         className="absolute inset-0 cursor-grab active:cursor-grabbing select-none"
+        style={{touchAction: 'none'}}
         onWheel={onWheel}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
