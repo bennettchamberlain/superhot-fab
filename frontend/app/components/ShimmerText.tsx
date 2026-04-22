@@ -44,14 +44,13 @@ export default function ShimmerText({
     const img = ctx.createImageData(wh, wh);
     const id = img.data;
 
-    let t = 0;
     const inc = 1 / wh;
 
     const arr: number[] = new Array(w2h);
     for (let k = 0; k < w2h; ++k) arr[k] = Math.random() * 1.5 - 0.5;
 
     /** DARKER hues + bright highlights — deep saturation, glow only on peaks */
-    const color = (v: number) => {
+    const colorFn = (v: number) => {
       v = Math.min(Math.max(v, 0.2), 1);
       v = Math.pow(v, 1.5);              // darken base hues / push midtones down
       v *= 1.25;                          // slight contrast boost
@@ -59,8 +58,6 @@ export default function ShimmerText({
       v += glow;
       return 255 * Math.min(v, 1);
     };
-
-    const ease = (x: number) => (x > 0.2) ? 0 : interp(1, 0, x * 6);
 
     const interp = (a: number, b: number, tt: number) => {
       tt = tt * tt * tt * (6 * tt * tt - 15 * tt + 10);
@@ -84,44 +81,36 @@ export default function ShimmerText({
 
     const oct = (x: number, y: number) => p(x * 3.0, y * 4.0) + p(x * 4.0, y * 5.0) * 0.5;
 
-    const draw = () => {
-      rafRef.current = window.requestAnimationFrame(draw);
-      t += inc;
+    // Draw once without animation
+    for (let x = 1; x >= 0; x -= inc) {
+      for (let y = 1; y >= 0; y -= inc) {
+        const idx = (y * wh + x) * wh * 4;
 
-      for (let x = 1; x >= 0; x -= inc) {
-        for (let y = 1; y >= 0; y -= inc) {
-          const idx = (y * wh + x) * wh * 4;
+        const dist = Math.sqrt(x * x + y * y);
 
-          const dist = Math.sqrt(x * x + y * y);
+        const ax = oct(x, y);
+        const ay = oct(x + 2, y);
 
-          const ax = oct(x, y);
-          const ay = oct(x + 2, y + t / 3);
+        const bx = oct(x + dist * 0.3 + ax / 22 + 0.7, y + ay / 5 + 2);
+        const by = oct(x + ax / 3,              y + ay / 3 + 5);
 
-          const bx = oct(x + dist * 0.3 + ax / 22 + 0.7, y + ay / 5 + 2);
-          const by = oct(x + ax / 3 + 4 * t,              y + ay / 3 + 5);
+        const no = oct(x + bx / 5, y + by / 2) * 0.7 + 0.15;
+        const d  = ax * by / 2;
+        const e  = ay * bx / 2;
 
-          const no = oct(x + bx / 5, y + by / 2) * 0.7 + 0.15;
-          const d  = ax * by / 2;
-          const e  = ay * bx / 2;
-
-          id[idx + 0] = color(no + d / 5);
-          id[idx + 1] = color(no / 3 + e / 5 + d);
-          id[idx + 2] = color(d + e);
-          // keep fully opaque — CSS bg-clip-text uses text shape as the mask
-          id[idx + 3] = 255;
-        }
+        id[idx + 0] = colorFn(no + d / 5);
+        id[idx + 1] = colorFn(no / 3 + e / 5 + d);
+        id[idx + 2] = colorFn(d + e);
+        // keep fully opaque — CSS bg-clip-text uses text shape as the mask
+        id[idx + 3] = 255;
       }
+    }
 
-      ctx.putImageData(img, 0, 0);
+    ctx.putImageData(img, 0, 0);
 
-      if (span) {
-        span.style.backgroundImage = `url(${c.toDataURL()})`;
-      }
-    };
-
-    draw();
-
-    return () => window.cancelAnimationFrame(rafRef.current);
+    if (span) {
+      span.style.backgroundImage = `url(${c.toDataURL()})`;
+    }
   }, [color]);
 
   const content = lines ? lines.join('\n') : (label ?? '');

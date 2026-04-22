@@ -1,135 +1,148 @@
 'use client'
 
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useCallback} from 'react'
 import Image from 'next/image'
 import {urlForImage} from '@/sanity/lib/utils'
 import {X, ChevronLeft, ChevronRight, Play} from 'lucide-react'
 
-interface GalleryItem {
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export interface GalleryItem {
   _key: string
   type: 'image' | 'video'
-  image?: {
-    asset: {_ref: string}
-    alt?: string
-  }
-  video?: {
-    asset: {_ref: string; url: string}
-  }
-  videoThumbnail?: {
-    asset: {_ref: string}
-  }
+  size?: 'small' | 'medium' | 'wide' | 'large'
+  image?: {asset: {_ref: string}; alt?: string}
+  video?: {asset: {_ref: string; url: string}}
+  videoThumbnail?: {asset: {_ref: string}}
   title?: string
   description?: string
   tags?: string[]
-  featured?: boolean
 }
 
 interface MosaicGalleryProps {
   items: GalleryItem[]
-  layout?: 'masonry' | 'grid' | 'justified'
   columns?: number
+  gap?: 'none' | 'small' | 'medium' | 'large'
 }
 
-export function MosaicGallery({items, layout = 'masonry', columns = 3}: MosaicGalleryProps) {
-  const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [currentIndex, setCurrentIndex] = useState(0)
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-  // Keyboard navigation
+const GAP_MAP: Record<string, string> = {
+  none: 'gap-0',
+  small: 'gap-1',
+  medium: 'gap-2',
+  large: 'gap-4',
+}
+
+// Map item size → CSS grid span classes
+const SPAN_MAP: Record<string, string> = {
+  small:  'col-span-1 row-span-1',
+  medium: 'col-span-1 row-span-2',
+  wide:   'col-span-2 row-span-1',
+  large:  'col-span-2 row-span-2',
+}
+
+function getThumbUrl(item: GalleryItem): string | null {
+  if (item.type === 'video') {
+    const thumb = item.videoThumbnail ?? item.image
+    return thumb ? urlForImage(thumb)?.url() ?? null : null
+  }
+  return item.image ? urlForImage(item.image)?.url() ?? null : null
+}
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+export function MosaicGallery({items, columns = 3, gap = 'small'}: MosaicGalleryProps) {
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+
+  const isOpen = lightboxIndex !== null
+  const currentItem = isOpen ? items[lightboxIndex] : null
+
+  // lock scroll when lightbox open
   useEffect(() => {
-    if (!lightboxOpen) return
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeLightbox()
-      if (e.key === 'ArrowLeft') goToPrevious()
-      if (e.key === 'ArrowRight') goToNext()
+    document.body.style.overflow = isOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
     }
+  }, [isOpen])
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [lightboxOpen, currentIndex])
+  const close = useCallback(() => setLightboxIndex(null), [])
+  const prev = useCallback(
+    () => setLightboxIndex((i) => (i === null ? null : (i - 1 + items.length) % items.length)),
+    [items.length],
+  )
+  const next = useCallback(
+    () => setLightboxIndex((i) => (i === null ? null : (i + 1) % items.length)),
+    [items.length],
+  )
 
-  const openLightbox = (index: number) => {
-    setCurrentIndex(index)
-    setLightboxOpen(true)
-    document.body.style.overflow = 'hidden'
+  useEffect(() => {
+    if (!isOpen) return
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close()
+      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowRight') next()
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [isOpen, close, prev, next])
+
+  // Dynamic grid column class
+  const colClass: Record<number, string> = {
+    2: 'grid-cols-2',
+    3: 'grid-cols-3',
+    4: 'grid-cols-4',
+    5: 'grid-cols-5',
   }
-
-  const closeLightbox = () => {
-    setLightboxOpen(false)
-    document.body.style.overflow = 'auto'
-  }
-
-  const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % items.length)
-  }
-
-  const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length)
-  }
-
-  const currentItem = items[currentIndex]
-
-  // Grid layout classes based on column count
-  const gridClass = {
-    2: 'md:grid-cols-2',
-    3: 'md:grid-cols-3',
-    4: 'md:grid-cols-4',
-    5: 'md:grid-cols-5',
-  }[columns]
 
   return (
     <>
-      {/* Gallery Grid */}
+      {/* ── Mosaic grid ───────────────────────────────────────────────────── */}
       <div
-        className={`grid grid-cols-1 ${gridClass} gap-4 ${
-          layout === 'masonry' ? 'auto-rows-auto' : ''
-        }`}
+        className={`w-full grid auto-rows-[200px] ${colClass[columns] ?? 'grid-cols-3'} ${GAP_MAP[gap] ?? 'gap-1'}`}
       >
         {items.map((item, index) => {
+          const thumbUrl = getThumbUrl(item)
+          if (!thumbUrl) return null
+
+          const spanClass = SPAN_MAP[item.size ?? 'small'] ?? 'col-span-1 row-span-1'
           const isVideo = item.type === 'video'
-          const imageUrl = isVideo
-            ? item.videoThumbnail
-              ? urlForImage(item.videoThumbnail)?.url()
-              : item.image
-                ? urlForImage(item.image)?.url()
-                : null
-            : item.image
-              ? urlForImage(item.image)?.url()
-              : null
-
-          if (!imageUrl) return null
-
-          const spanClass = item.featured ? 'md:col-span-2 md:row-span-2' : ''
 
           return (
             <button
               key={item._key}
-              onClick={() => openLightbox(index)}
-              className={`relative group overflow-hidden rounded-lg cursor-pointer bg-gray-900 ${spanClass} ${
-                layout === 'masonry' ? 'break-inside-avoid' : 'aspect-square'
-              } hover:scale-[1.02] transition-transform duration-300`}
+              onClick={() => setLightboxIndex(index)}
+              className={`${spanClass} relative group overflow-hidden bg-zinc-900 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white`}
+              aria-label={item.title ?? `Gallery item ${index + 1}`}
             >
               <Image
-                src={imageUrl}
-                alt={item.image?.alt || item.title || 'Gallery image'}
+                src={thumbUrl}
+                alt={item.image?.alt ?? item.title ?? ''}
                 fill
-                className="object-cover group-hover:scale-110 transition-transform duration-500"
-                sizes={`(max-width: 768px) 100vw, ${item.featured ? '50vw' : `${100 / columns}vw`}`}
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes={`(max-width: 768px) 100vw, ${Math.round((100 / columns) * (item.size === 'wide' || item.size === 'large' ? 2 : 1))}vw`}
               />
-              
-              {/* Video play icon overlay */}
+
+              {/* video play badge */}
               {isVideo && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-colors">
-                  <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center">
-                    <Play className="w-8 h-8 text-gray-900 ml-1" fill="currentColor" />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-14 h-14 bg-black/60 flex items-center justify-center">
+                    <Play className="w-7 h-7 text-white ml-1" fill="currentColor" />
                   </div>
                 </div>
               )}
 
-              {/* Title overlay */}
+              {/* hover title strip */}
               {item.title && (
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <p className="text-white font-semibold">{item.title}</p>
+                <div className="absolute bottom-0 inset-x-0 bg-black/70 px-3 py-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  <p className="text-white text-sm font-semibold truncate">{item.title}</p>
+                </div>
+              )}
+
+              {/* details indicator — shown only if there's a description */}
+              {item.description && (
+                <div className="absolute top-2 right-2 w-5 h-5 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-[10px] font-bold leading-none">i</span>
                 </div>
               )}
             </button>
@@ -137,77 +150,93 @@ export function MosaicGallery({items, layout = 'masonry', columns = 3}: MosaicGa
         })}
       </div>
 
-      {/* Lightbox */}
-      {lightboxOpen && currentItem && (
-        <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center">
-          {/* Close button */}
+      {/* ── Lightbox ──────────────────────────────────────────────────────── */}
+      {isOpen && currentItem && (
+        <div
+          className="fixed inset-0 z-50 bg-black/96 flex"
+          onClick={close}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Image lightbox"
+        >
+          {/* Close */}
           <button
-            onClick={closeLightbox}
-            className="absolute top-4 right-4 z-50 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-            aria-label="Close lightbox"
+            onClick={close}
+            className="absolute top-4 right-4 z-50 w-10 h-10 bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+            aria-label="Close"
           >
-            <X className="w-6 h-6 text-white" />
+            <X className="w-5 h-5 text-white" />
           </button>
 
-          {/* Navigation buttons */}
+          {/* Prev / Next */}
           {items.length > 1 && (
             <>
               <button
-                onClick={goToPrevious}
-                className="absolute left-4 z-50 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-                aria-label="Previous image"
+                onClick={(e) => {e.stopPropagation(); prev()}}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-50 w-10 h-10 bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                aria-label="Previous"
               >
-                <ChevronLeft className="w-6 h-6 text-white" />
+                <ChevronLeft className="w-5 h-5 text-white" />
               </button>
               <button
-                onClick={goToNext}
-                className="absolute right-4 z-50 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-                aria-label="Next image"
+                onClick={(e) => {e.stopPropagation(); next()}}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-50 w-10 h-10 bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                aria-label="Next"
               >
-                <ChevronRight className="w-6 h-6 text-white" />
+                <ChevronRight className="w-5 h-5 text-white" />
               </button>
             </>
           )}
 
-          {/* Main content area */}
-          <div className="w-full h-full flex flex-col lg:flex-row items-center justify-center p-4 lg:p-8 gap-8">
-            {/* Media */}
-            <div className="relative w-full lg:w-2/3 h-[60vh] lg:h-[80vh] flex items-center justify-center">
+          {/* Content — stop propagation so clicking the media/panel doesn't close */}
+          <div
+            className="flex w-full h-full flex-col lg:flex-row"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Media panel */}
+            <div className="relative flex-1 flex items-center justify-center p-6 lg:p-12">
               {currentItem.type === 'video' && currentItem.video?.asset?.url ? (
                 <video
                   src={currentItem.video.asset.url}
                   controls
                   autoPlay
-                  className="max-w-full max-h-full rounded-lg"
+                  className="max-w-full max-h-full"
                 />
               ) : currentItem.image ? (
-                <Image
-                  src={urlForImage(currentItem.image)?.url() || ''}
-                  alt={currentItem.image.alt || currentItem.title || 'Gallery image'}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 1024px) 100vw, 66vw"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src={urlForImage(currentItem.image)?.url() ?? ''}
+                    alt={currentItem.image.alt ?? currentItem.title ?? ''}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 1024px) 100vw, 75vw"
+                    priority
+                  />
+                </div>
               ) : null}
             </div>
 
-            {/* Info panel */}
-            {(currentItem.title || currentItem.description || currentItem.tags) && (
-              <div className="w-full lg:w-1/3 max-w-md bg-white/5 backdrop-blur-sm rounded-lg p-6 max-h-[80vh] overflow-y-auto">
+            {/* Info panel — only renders if there's something to show */}
+            {(currentItem.title || currentItem.description || currentItem.tags?.length) && (
+              <aside className="lg:w-80 flex-shrink-0 bg-zinc-900 flex flex-col p-8 overflow-y-auto">
                 {currentItem.title && (
-                  <h3 className="text-2xl font-bold text-white mb-4">{currentItem.title}</h3>
+                  <h2 className="text-xl font-bold text-white mb-4 leading-tight">
+                    {currentItem.title}
+                  </h2>
                 )}
-                
+
                 {currentItem.description && (
-                  <p className="text-gray-300 mb-6 whitespace-pre-wrap">{currentItem.description}</p>
+                  <p className="text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap mb-6">
+                    {currentItem.description}
+                  </p>
                 )}
 
                 {currentItem.tags && currentItem.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mt-auto">
                     {currentItem.tags.map((tag, i) => (
                       <span
                         key={i}
-                        className="px-3 py-1 bg-white/10 text-white text-sm rounded-full"
+                        className="px-2 py-0.5 bg-white/10 text-white text-xs uppercase tracking-wide"
                       >
                         {tag}
                       </span>
@@ -215,17 +244,17 @@ export function MosaicGallery({items, layout = 'masonry', columns = 3}: MosaicGa
                   </div>
                 )}
 
-                <div className="mt-6 text-sm text-gray-400">
-                  {currentIndex + 1} / {items.length}
-                </div>
-              </div>
+                <p className="text-zinc-500 text-xs mt-6">
+                  {lightboxIndex! + 1} / {items.length}
+                </p>
+              </aside>
             )}
           </div>
 
-          {/* Keyboard navigation hint */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-gray-400 text-sm">
-            Use ← → arrow keys to navigate
-          </div>
+          {/* Keyboard hint */}
+          <p className="absolute bottom-3 left-1/2 -translate-x-1/2 text-zinc-500 text-xs pointer-events-none">
+            ← → navigate · ESC close
+          </p>
         </div>
       )}
     </>

@@ -2,7 +2,7 @@ import {ImagesIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
 /**
- * Gallery schema for mosaic-style image/video galleries
+ * Gallery document — full-width mosaic gallery with drag-and-drop ordering.
  */
 export const gallery = defineType({
   name: 'gallery',
@@ -16,11 +16,12 @@ export const gallery = defineType({
       type: 'string',
       validation: (rule) => rule.required(),
     }),
+
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      description: 'URL-friendly identifier for this gallery',
+      description: 'URL path for this gallery  (e.g. /gallery/my-gallery)',
       options: {
         source: 'title',
         maxLength: 96,
@@ -28,52 +29,59 @@ export const gallery = defineType({
       },
       validation: (rule) => rule.required(),
     }),
+
     defineField({
       name: 'description',
       title: 'Gallery Description',
       type: 'text',
-      description: 'Optional description for the gallery',
+      description: 'Optional — shown at the top of the gallery page',
     }),
+
+    // ── Items — drag & drop ──────────────────────────────────────────────────
     defineField({
       name: 'items',
       title: 'Gallery Items',
       type: 'array',
       of: [{type: 'galleryItem'}],
-      description: 'Drag and drop to reorder gallery items',
+      description:
+        'Drag items to reorder. Click any item to set its size, add a title, description, or tags.',
       validation: (rule) => rule.required().min(1),
     }),
-    defineField({
-      name: 'layout',
-      title: 'Layout Style',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Masonry (Pinterest-style)', value: 'masonry'},
-          {title: 'Grid (Equal height)', value: 'grid'},
-          {title: 'Justified (Equal height rows)', value: 'justified'},
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'masonry',
-    }),
+
+    // ── Layout options ───────────────────────────────────────────────────────
     defineField({
       name: 'columns',
-      title: 'Number of Columns',
+      title: 'Base Columns',
       type: 'number',
-      description: 'Desktop columns (responsive on mobile)',
-      options: {
-        list: [2, 3, 4, 5],
-      },
+      description: 'Number of base columns in the mosaic grid (desktop)',
+      options: {list: [2, 3, 4, 5]},
       initialValue: 3,
       validation: (rule) => rule.required().min(2).max(5),
     }),
+
+    defineField({
+      name: 'gap',
+      title: 'Gap between items',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'None', value: 'none'},
+          {title: 'Small (4px)', value: 'small'},
+          {title: 'Medium (8px)', value: 'medium'},
+          {title: 'Large (16px)', value: 'large'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'small',
+    }),
+
     defineField({
       name: 'showOnHomepage',
       title: 'Show on Homepage',
       type: 'boolean',
-      description: 'Display this gallery on the homepage',
       initialValue: false,
     }),
+
     defineField({
       name: 'publishedAt',
       title: 'Published At',
@@ -81,6 +89,7 @@ export const gallery = defineType({
       initialValue: () => new Date().toISOString(),
     }),
   ],
+
   preview: {
     select: {
       title: 'title',
@@ -88,14 +97,15 @@ export const gallery = defineType({
       media: 'items.0.image',
     },
     prepare({title, items, media}) {
-      const itemCount = items?.length || 0
+      const count = items?.length ?? 0
       return {
         title,
-        subtitle: `${itemCount} item${itemCount !== 1 ? 's' : ''}`,
+        subtitle: `${count} item${count !== 1 ? 's' : ''}`,
         media,
       }
     },
   },
+
   orderings: [
     {
       title: 'Published Date, New',
@@ -103,7 +113,7 @@ export const gallery = defineType({
       by: [{field: 'publishedAt', direction: 'desc'}],
     },
     {
-      title: 'Title',
+      title: 'Title A–Z',
       name: 'titleAsc',
       by: [{field: 'title', direction: 'asc'}],
     },

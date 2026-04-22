@@ -5,96 +5,73 @@ import {MosaicGallery} from '@/app/components/MosaicGallery'
 import Link from 'next/link'
 import {ChevronLeft} from 'lucide-react'
 
-// GROQ query to fetch a single gallery
 const GALLERY_QUERY = `*[_type == "gallery" && slug.current == $slug][0] {
   _id,
   title,
   slug,
   description,
-  layout,
   columns,
+  gap,
   publishedAt,
   items[] {
     _key,
     type,
-    image {
-      asset->,
-      alt
-    },
-    video {
-      asset->
-    },
-    videoThumbnail {
-      asset->
-    },
+    size,
+    image { asset->, alt },
+    video { asset-> },
+    videoThumbnail { asset-> },
     title,
     description,
-    tags,
-    featured
+    tags
   }
 }`
 
-type Props = {
-  params: Promise<{slug: string}>
-}
+type Props = {params: Promise<{slug: string}>}
 
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const {slug} = await params
-  const {data: gallery} = await sanityFetch({
-    query: GALLERY_QUERY,
-    params: {slug},
-  })
-
-  if (!gallery) {
-    return {
-      title: 'Gallery Not Found',
-    }
-  }
-
+  const {data: gallery} = await sanityFetch({query: GALLERY_QUERY, params: {slug}})
+  if (!gallery) return {title: 'Gallery Not Found'}
   return {
-    title: `${gallery.title} - Superhot Fabrication`,
-    description: gallery.description || `View ${gallery.title} gallery`,
+    title: `${gallery.title} — Superhot Fabrication`,
+    description: gallery.description ?? `View the ${gallery.title} gallery`,
   }
 }
 
 export default async function GalleryPage({params}: Props) {
   const {slug} = await params
-  const {data: gallery} = await sanityFetch({
-    query: GALLERY_QUERY,
-    params: {slug},
-  })
+  const {data: gallery} = await sanityFetch({query: GALLERY_QUERY, params: {slug}})
 
-  if (!gallery) {
-    notFound()
-  }
+  if (!gallery) notFound()
 
   return (
-    <div className="container mx-auto px-4 py-24">
-      {/* Back button */}
-      <Link
-        href="/gallery"
-        className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors"
-      >
-        <ChevronLeft className="w-5 h-5" />
-        Back to Galleries
-      </Link>
+    <div className="py-20">
+      {/* Back + header */}
+      <div className="px-6 mb-10">
+        <Link
+          href="/gallery"
+          className="inline-flex items-center gap-1 text-zinc-400 hover:text-white text-sm transition-colors mb-8"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          All galleries
+        </Link>
 
-      {/* Gallery header */}
-      <div className="mb-12">
-        <h1 className="text-5xl font-bold mb-4">{gallery.title}</h1>
+        <h1 className="text-5xl font-bold tracking-tight">{gallery.title}</h1>
+
         {gallery.description && (
-          <p className="text-xl text-gray-400">{gallery.description}</p>
+          <p className="text-zinc-400 mt-3 text-lg">{gallery.description}</p>
         )}
-        <div className="mt-4 text-sm text-gray-500">
-          {gallery.items.length} item{gallery.items.length !== 1 ? 's' : ''}
-        </div>
+
+        <p className="text-zinc-500 text-sm mt-2">
+          {gallery.items?.length ?? 0} items
+        </p>
       </div>
 
-      {/* Gallery grid */}
+      {/* Full-width mosaic */}
       <MosaicGallery
-        items={gallery.items}
-        layout={gallery.layout}
-        columns={gallery.columns}
+        items={gallery.items ?? []}
+        columns={gallery.columns ?? 3}
+        gap={gallery.gap ?? 'small'}
       />
     </div>
   )
