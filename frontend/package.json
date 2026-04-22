@@ -2,9 +2,7 @@
   "name": "frontend",
   "private": true,
   "scripts": {
-    "prebuild": "npm run typegen",
     "build": "next build",
-    "predev": "npm run typegen",
     "dev": "next dev -p 3062",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
