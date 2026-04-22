@@ -13,7 +13,7 @@ const GALLERY_QUERY = `*[_type == "gallery" && slug.current == $slug][0] {
     _key,
     name,
     mediaType,
-    image { asset->, alt },
+    image { asset->{_id, url, metadata{dimensions}}, alt, hotspot, crop },
     video { asset-> },
     videoThumbnail { asset-> },
     description
@@ -22,21 +22,31 @@ const GALLERY_QUERY = `*[_type == "gallery" && slug.current == $slug][0] {
 
 type Props = {params: Promise<{slug: string}>}
 
-// Cycle through sizes to create a natural mosaic rhythm
-const MOSAIC_SIZES: GalleryItem['size'][] = [
-  'wide', 'small', 'small',
-  'small', 'large', 'small',
-  'small', 'small', 'wide',
-  'medium', 'small', 'small',
-  'small', 'wide', 'small',
-  'large', 'small', 'small',
-]
+// Derive mosaic size from real image aspect ratio + position in layout
+// so the grid always looks balanced regardless of what gets uploaded.
+function sizeFromAspect(item: any, idx: number): GalleryItem['size'] {
+  const dims = item.image?.asset?.metadata?.dimensions
+  if (!dims) {
+    // fallback cycle for items with no metadata yet
+    const cycle: GalleryItem['size'][] = ['wide','small','small','small','large','small','small','small']
+    return cycle[idx % cycle.length]
+  }
+  const ratio = dims.width / dims.height
+  // Very wide landscape (panoramic): span 2 cols, 1 row
+  if (ratio > 1.7) return 'wide'
+  // Tall portrait: span 1 col, 2 rows
+  if (ratio < 0.7) return 'medium'
+  // Near-square tall: occasionally go large
+  if (ratio < 1.1 && idx % 5 === 0) return 'large'
+  // Default: small (1×1)
+  return 'small'
+}
 
 function toMosaicItems(media: any[]): GalleryItem[] {
   return media.map((item, i) => ({
     _key: item._key,
     type: item.mediaType === 'video' ? 'video' : 'image',
-    size: MOSAIC_SIZES[i % MOSAIC_SIZES.length],
+    size: sizeFromAspect(item, i),
     image: item.image,
     video: item.video,
     videoThumbnail: item.videoThumbnail,

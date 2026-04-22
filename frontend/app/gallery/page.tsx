@@ -12,7 +12,7 @@ const GALLERIES_QUERY = `*[_type == "gallery"] | order(publishedAt desc) {
     _key,
     name,
     mediaType,
-    image { asset->, alt },
+    image { asset->{_id, url, metadata{dimensions}}, alt, hotspot, crop },
     video { asset-> },
     videoThumbnail { asset-> },
     description

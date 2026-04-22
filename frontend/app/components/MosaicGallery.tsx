@@ -42,12 +42,19 @@ const SPAN_MAP: Record<string, string> = {
   large:  'col-span-2 row-span-2',
 }
 
+// Width hints per size — used for responsive srcset sizing
+const THUMB_W: Record<string, number> = {small: 600, medium: 600, wide: 1200, large: 1200}
+
 function getThumbUrl(item: GalleryItem): string | null {
+  const w = THUMB_W[item.size ?? 'small']
   if (item.type === 'video') {
     const thumb = item.videoThumbnail ?? item.image
-    return thumb ? urlForImage(thumb)?.url() ?? null : null
+    // Use hotspot-aware crop so thumbnail always frames the subject
+    return thumb ? urlForImage(thumb)?.width(w).height(Math.round(w * 0.75)).fit('crop').auto('format').url() ?? null : null
   }
-  return item.image ? urlForImage(item.image)?.url() ?? null : null
+  return item.image
+    ? urlForImage(item.image)?.width(w).height(Math.round(w * 0.75)).fit('crop').auto('format').url() ?? null
+    : null
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
