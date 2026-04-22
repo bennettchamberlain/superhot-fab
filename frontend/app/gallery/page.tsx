@@ -1,6 +1,6 @@
 import {Metadata} from 'next'
 import {sanityFetch} from '@/sanity/lib/live'
-import {JustifiedMosaic} from '@/app/components/JustifiedMosaic'
+import {CanvasMosaic} from '@/app/components/CanvasMosaic'
 
 const GALLERIES_QUERY = `*[_type == "gallery"] | order(publishedAt desc) {
   _id,
@@ -56,7 +56,7 @@ export default async function GalleryListPage() {
             )}
           </div>
           {gallery.media?.length > 0 && (
-            <JustifiedMosaic
+            <CanvasMosaic
               items={gallery.media}
               targetRowHeight={320}
               maxCropFraction={0.18}

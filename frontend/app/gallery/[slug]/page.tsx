@@ -1,7 +1,7 @@
 import {Metadata} from 'next'
 import {notFound} from 'next/navigation'
 import {sanityFetch} from '@/sanity/lib/live'
-import {JustifiedMosaic} from '@/app/components/JustifiedMosaic'
+import {CanvasMosaic} from '@/app/components/CanvasMosaic'
 
 const GALLERY_QUERY = `*[_type == "gallery" && slug.current == $slug][0] {
   _id,
@@ -60,7 +60,7 @@ export default async function GalleryPage({params}: Props) {
       </div>
 
       {gallery.media?.length > 0 ? (
-        <JustifiedMosaic
+        <CanvasMosaic
           items={gallery.media}
           targetRowHeight={320}
           maxCropFraction={0.18}
