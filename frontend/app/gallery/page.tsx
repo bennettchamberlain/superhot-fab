@@ -48,15 +48,18 @@ export default async function GalleryListPage() {
   const g = gallery as any
 
   return (
-    <div className="bg-black min-h-screen">
-      <CanvasMosaic
-        items={g.media}
-        title={g.title}
-        description={g.description}
-        columns={4}
-        colWidth={520}
-        gap={12}
-      />
+    <div className="bg-black h-screen overflow-hidden">
+      {/* pt-16 offsets the fixed nav (~64px) so canvas sits below it */}
+      <div className="pt-16 h-full">
+        <CanvasMosaic
+          items={g.media}
+          title={g.title}
+          description={g.description}
+          columns={4}
+          colWidth={520}
+          gap={12}
+        />
+      </div>
     </div>
   )
 }

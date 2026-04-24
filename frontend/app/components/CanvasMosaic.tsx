@@ -286,7 +286,7 @@ export function CanvasMosaic({
       <div
         ref={wrapRef}
         className="relative w-full overflow-hidden bg-black"
-        style={{height: '100svh', touchAction: 'none', overscrollBehavior: 'none', cursor: dragging.current ? 'grabbing' : 'grab'}}
+        style={{height: '100%', touchAction: 'none', overscrollBehavior: 'none', cursor: dragging.current ? 'grabbing' : 'grab'}}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
