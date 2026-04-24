@@ -49,17 +49,13 @@ export default async function GalleryListPage() {
 
   return (
     <div className="bg-black min-h-screen">
-      <div className="px-6 pt-16 pb-6">
-        <h1 className="text-3xl font-bold text-white tracking-tight">{g.title}</h1>
-        {g.description && (
-          <p className="text-zinc-400 mt-2">{g.description}</p>
-        )}
-      </div>
       <CanvasMosaic
         items={g.media}
-        targetRowHeight={320}
-        maxCropFraction={0.18}
-        gap={8}
+        title={g.title}
+        description={g.description}
+        columns={4}
+        colWidth={520}
+        gap={12}
       />
     </div>
   )

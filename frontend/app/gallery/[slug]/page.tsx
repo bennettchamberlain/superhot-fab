@@ -62,9 +62,9 @@ export default async function GalleryPage({params}: Props) {
       {gallery.media?.length > 0 ? (
         <CanvasMosaic
           items={gallery.media}
-          targetRowHeight={320}
-          maxCropFraction={0.18}
-          gap={3}
+          columns={4}
+          colWidth={520}
+          gap={12}
         />
       ) : (
         <p className="px-6 py-12 text-zinc-500">No media in this gallery yet.</p>
