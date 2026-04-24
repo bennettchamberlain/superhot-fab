@@ -427,7 +427,7 @@ export function CanvasMosaic({
         </div>
 
         {/* ── HUD ─────────────────────────────────────────────────────── */}
-        <div className="absolute bottom-6 right-6 flex flex-col gap-2 z-20">
+        <div className="absolute bottom-20 right-6 flex flex-col gap-2 z-20">
           <button onClick={zoomIn}    className="w-9 h-9 bg-zinc-800/80 backdrop-blur-sm hover:bg-zinc-700 text-white flex items-center justify-center transition-colors" aria-label="Zoom in"><ZoomIn className="w-4 h-4" /></button>
           <button onClick={zoomOut}   className="w-9 h-9 bg-zinc-800/80 backdrop-blur-sm hover:bg-zinc-700 text-white flex items-center justify-center transition-colors" aria-label="Zoom out"><ZoomOut className="w-4 h-4" /></button>
           <button onClick={resetView} className="w-9 h-9 bg-zinc-800/80 backdrop-blur-sm hover:bg-zinc-700 text-white flex items-center justify-center text-xs font-bold transition-colors" aria-label="Reset">1:1</button>
