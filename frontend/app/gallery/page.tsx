@@ -2,7 +2,7 @@ import {Metadata} from 'next'
 import {sanityFetch} from '@/sanity/lib/live'
 import {CanvasMosaic} from '@/app/components/CanvasMosaic'
 
-const GALLERIES_QUERY = `*[_type == "gallery"] | order(publishedAt desc) {
+const GALLERIES_QUERY = `*[_type == "gallery"] | order(publishedAt desc) [0] {
   _id,
   title,
   slug,
@@ -13,14 +13,14 @@ const GALLERIES_QUERY = `*[_type == "gallery"] | order(publishedAt desc) {
     name,
     mediaType,
     image {
-      asset->{ _id, url, metadata{ dimensions } },
+      asset->{ _id, _ref, url, metadata{ dimensions } },
       alt,
       hotspot,
       crop
     },
     video { asset-> },
     videoThumbnail {
-      asset->{ _id, metadata{ dimensions } },
+      asset->{ _id, _ref, metadata{ dimensions } },
       hotspot,
       crop
     },
@@ -34,9 +34,9 @@ export const metadata: Metadata = {
 }
 
 export default async function GalleryListPage() {
-  const {data: galleries} = await sanityFetch({query: GALLERIES_QUERY})
+  const {data: gallery} = await sanityFetch({query: GALLERIES_QUERY})
 
-  if (!galleries || galleries.length === 0) {
+  if (!gallery || !(gallery as any).media?.length) {
     return (
       <div className="px-6 py-24">
         <h1 className="text-4xl font-bold mb-4">Gallery</h1>
@@ -45,26 +45,22 @@ export default async function GalleryListPage() {
     )
   }
 
+  const g = gallery as any
+
   return (
     <div className="bg-black min-h-screen">
-      {(galleries as any[]).map((gallery: any) => (
-        <section key={gallery._id} className="mb-16">
-          <div className="px-6 pt-16 pb-6">
-            <h2 className="text-3xl font-bold text-white tracking-tight">{gallery.title}</h2>
-            {gallery.description && (
-              <p className="text-zinc-400 mt-2">{gallery.description}</p>
-            )}
-          </div>
-          {gallery.media?.length > 0 && (
-            <CanvasMosaic
-              items={gallery.media}
-              targetRowHeight={320}
-              maxCropFraction={0.18}
-              gap={3}
-            />
-          )}
-        </section>
-      ))}
+      <div className="px-6 pt-16 pb-6">
+        <h1 className="text-3xl font-bold text-white tracking-tight">{g.title}</h1>
+        {g.description && (
+          <p className="text-zinc-400 mt-2">{g.description}</p>
+        )}
+      </div>
+      <CanvasMosaic
+        items={g.media}
+        targetRowHeight={320}
+        maxCropFraction={0.18}
+        gap={8}
+      />
     </div>
   )
 }

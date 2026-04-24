@@ -62,6 +62,19 @@ interface Props {
   gap?: number
 }
 
+// ─── Image URL helper ─────────────────────────────────────────────────────────
+// GROQ asset-> dereferences the asset so we get { _id, url, ... } rather than
+// { _ref: "image-..." }.  @sanity/image-url needs _ref, so we normalise here:
+// if _ref is missing, copy _id into _ref (they're the same value for image assets).
+function sanityImageSrc(
+  img: GalleryMediaItem['image'] | GalleryMediaItem['videoThumbnail'] | undefined,
+): GalleryMediaItem['image'] | null {
+  if (!img?.asset) return null
+  const asset = img.asset as Record<string, unknown>
+  if (!asset._ref && asset._id) asset._ref = asset._id
+  return img as GalleryMediaItem['image']
+}
+
 // ─── Layout engine (same justified math as before) ────────────────────────────
 
 function naturalRatio(item: GalleryMediaItem): number {
@@ -141,7 +154,7 @@ export function CanvasMosaic({
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
   const [, forceRender] = useState(0)
 
-  const rows = buildLayout(items, CANVAS_W, targetRowHeight, maxCropFraction, gap)
+  const rows = buildLayout(items, CANVAS_W - 48, targetRowHeight, maxCropFraction, gap)
   const flatItems = rows.flatMap((r) => r.items.map((i) => i.item))
   const canvasHeight = rows.reduce((s, r) => s + r.height + gap, 0)
 
@@ -323,6 +336,8 @@ export function CanvasMosaic({
             top: 0,
             left: 0,
             width: CANVAS_W,
+            padding: 24,
+            boxSizing: 'border-box' as const,
             transformOrigin: '0 0',
             willChange: 'transform',
           }}
@@ -336,7 +351,7 @@ export function CanvasMosaic({
               {row.items.map((cell) => {
                 const idx = flatIdx++
                 const isVideo = cell.item.mediaType === 'video'
-                const src = isVideo ? (cell.item.videoThumbnail ?? cell.item.image) : cell.item.image
+                const src = sanityImageSrc(isVideo ? (cell.item.videoThumbnail ?? cell.item.image) : cell.item.image)
                 const url = src
                   ? urlForImage(src)?.width(cell.displayWidth * 2).height(cell.displayHeight * 2).fit('crop').auto('format').url() ?? null
                   : null
@@ -417,7 +432,7 @@ export function CanvasMosaic({
                 <video src={(currentItem.video.asset as any).url} controls autoPlay className="max-w-full max-h-full" />
               ) : currentItem.image ? (
                 <div className="relative w-full h-full">
-                  <Image src={urlForImage(currentItem.image)?.width(2400).fit('max').auto('format').url() ?? ''} alt={currentItem.image.alt ?? currentItem.name ?? ''} fill className="object-contain" sizes="(max-width: 1024px) 100vw, 80vw" priority />
+                  <Image src={urlForImage(sanityImageSrc(currentItem.image)!)?.width(2400).fit('max').auto('format').url() ?? ''} alt={currentItem.image.alt ?? currentItem.name ?? ''} fill className="object-contain" sizes="(max-width: 1024px) 100vw, 80vw" priority />
                 </div>
               ) : null}
             </div>
