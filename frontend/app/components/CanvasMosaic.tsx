@@ -252,7 +252,16 @@ export function CanvasMosaic({
   const zoomOut  = () => { scaleRef.current = Math.max(scaleRef.current / 1.3, ZOOM_MIN); applyTransform() }
   const resetView = () => { camRef.current = {x: 0, y: 0}; scaleRef.current = 1; applyTransform() }
 
-  useEffect(() => { applyTransform() }, [applyTransform])
+  useEffect(() => {
+    // On mobile, auto-fit the canvas to the viewport width on mount
+    if (wrapRef.current) {
+      const vpW = wrapRef.current.clientWidth
+      if (vpW < canvasW) {
+        scaleRef.current = vpW / canvasW
+      }
+    }
+    applyTransform()
+  }, [applyTransform, canvasW])
   useEffect(() => () => cancelAnimationFrame(rafRef.current), [])
 
   // ── Lightbox ───────────────────────────────────────────────────────────────
