@@ -2,7 +2,7 @@ import {Metadata} from 'next'
 import {sanityFetch} from '@/sanity/lib/live'
 import {CanvasMosaic} from '@/app/components/CanvasMosaic'
 
-const GALLERIES_QUERY = `*[_type == "gallery"] | order(publishedAt desc) [0] {
+const GALLERIES_QUERY = `*[_type == "gallery" && slug.current == "fabrication-portfolio"][0] {
   _id,
   title,
   slug,
