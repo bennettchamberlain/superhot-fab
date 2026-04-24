@@ -105,7 +105,7 @@ function buildMasonry(
 // ─── Physics constants ────────────────────────────────────────────────────────
 const DRAG_DAMPING = 0.65
 const FRICTION     = 0.88
-const ZOOM_MIN     = 0.18
+const ZOOM_MIN     = 0.5
 const ZOOM_MAX     = 3.5
 const TILT_MAX_DEG = 6
 
@@ -136,37 +136,14 @@ export function CanvasMosaic({
 
   const {cells, totalHeight, canvasW} = buildMasonry(items, columns, colWidth, gap, TITLE_H)
 
-  // ── Clamp camera so canvas can't be dragged beyond its bounds ────────────
-  const clampCam = useCallback((x: number, y: number) => {
-    const wrap = wrapRef.current
-    if (!wrap) return {x, y}
-    const s = scaleRef.current
-    const vpW = wrap.clientWidth
-    const vpH = wrap.clientHeight
-    const worldW = (canvasW + 64) * s
-    const worldH = (totalHeight + 64) * s
-    // Max pan: can't drag right past origin; can't drag down past origin
-    const maxX = 0
-    const minX = Math.min(0, vpW - worldW)
-    const maxY = 0
-    const minY = Math.min(0, vpH - worldH)
-    return {
-      x: Math.min(maxX, Math.max(minX, x)),
-      y: Math.min(maxY, Math.max(minY, y)),
-    }
-  }, [canvasW, totalHeight])
-
-
-  const applyTransform = useCallback(() => {
+    const applyTransform = useCallback(() => {
     const el = canvasRef.current
     if (!el) return
     const s = scaleRef.current
-    const clamped = clampCam(camRef.current.x, camRef.current.y)
-    camRef.current = clamped
-    const {x, y} = clamped
+    const {x, y} = camRef.current
     const tilt = TILT_MAX_DEG * Math.max(0, 1 - (s - ZOOM_MIN) / (ZOOM_MAX - ZOOM_MIN))
     el.style.transform = `perspective(1600px) rotateX(${tilt}deg) translate(${x}px, ${y}px) scale(${s})`
-  }, [clampCam])
+  }, [])
 
   // ── Inertia loop ───────────────────────────────────────────────────────────
   const tick = useCallback(() => {
