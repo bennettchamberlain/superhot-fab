@@ -55,9 +55,9 @@ export default async function GalleryListPage() {
           items={g.media}
           title={g.title}
           description={g.description}
-          columns={4}
-          colWidth={520}
-          gap={12}
+          columns={3}
+          colWidth={400}
+          gap={10}
         />
       </div>
     </div>
