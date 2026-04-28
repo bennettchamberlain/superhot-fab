@@ -12,7 +12,7 @@
 
 :root {
   --background: #f26e26;
-  --foreground: #171717;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -63,7 +63,7 @@
   
   body {
     background: #f26e26;
-    color: #171717;
+    color: #ffffff;
     font-family: 'HelveticaLT', Arial, Helvetica, sans-serif;
     font-weight: 900;
   }
