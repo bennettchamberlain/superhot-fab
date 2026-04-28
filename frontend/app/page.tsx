@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import NeuroBackground from './components/NeuroBackground';
+import CursorSpotlight from './components/CursorSpotlight';
 import ShimmerText from './components/ShimmerText';
 import TiltCard from './components/TiltCard';
 
@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 
 export default function IndexPage() {
   return (
-    <main className="relative w-full bg-black overflow-hidden" style={{ height: '100vh' }}>
-      {/* Neural noise WebGL background — warm red/orange/yellow palette */}
-      <NeuroBackground blur={16} />
+    <main className="relative w-full bg-[#0b0b0b] overflow-hidden text-white" style={{ height: '100vh' }}>
+      {/* Cursor spotlight */}
+      <CursorSpotlight />
 
       {/* Radiating lines from center — aligned with clip-path triangle edges */}
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 4 }}>
