@@ -3,7 +3,7 @@
 import {useEffect, useRef} from 'react';
 import Link from 'next/link';
 
-type LabelColor = 'yellow' | 'orange' | 'red';
+type LabelColor = 'yellow' | 'orange' | 'red' | 'white';
 
 interface ShimmerTextProps {
   href?: string;
@@ -114,6 +114,20 @@ export default function ShimmerText({
   }, [color]);
 
   const content = lines ? lines.join('\n') : (label ?? '');
+
+  // White labels skip the canvas texture entirely
+  if (color === 'white') {
+    const inner = (
+      <span
+        className={textClassName}
+        style={{ color: '#ffffff', whiteSpace: lines ? 'pre-line' : undefined }}
+      >
+        {content}
+      </span>
+    );
+    if (href) return <Link href={href} className={className} onClick={onClick}>{inner}</Link>;
+    return <span className={className} onClick={onClick}>{inner}</span>;
+  }
 
   const inner = (
     <span

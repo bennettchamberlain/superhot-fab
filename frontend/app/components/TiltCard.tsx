@@ -20,9 +20,9 @@ export default function TiltCard({ children, className = '', style, zoneRef }: T
     const zone = (zoneRef?.current ?? card.parentElement) as HTMLElement | null;
     if (!zone) return;
 
-    const maxTilt = 18;
-    const scaleVal = 1.03;
-    const lerpSpeed = 0.045;
+    const maxTilt = 32;
+    const scaleVal = 1.12;
+    const lerpSpeed = 0.06;
 
     let mx = 0.5;
     let my = 0.5;

@@ -97,7 +97,7 @@ export default function IndexPage() {
           <TiltCard className="" />
           <Link href="/process" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: 'calc(50% - 150px)', left: 'calc(50% - 370px)', transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-            <ShimmerText label="PROCESS" color="yellow" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+            <ShimmerText label="PROCESS" color="white" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
         {/* Right section — GALLERY — perfect triangle right side */}
@@ -105,7 +105,7 @@ export default function IndexPage() {
           <TiltCard className="" />
           <Link href="/gallery" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: 'calc(50% - 150px)', right: 'calc(50% - 370px)', transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-            <ShimmerText label="GALLERY" color="orange" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+            <ShimmerText label="GALLERY" color="white" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
         {/* Bottom section — SHOP — perfect triangle bottom */}
@@ -113,7 +113,7 @@ export default function IndexPage() {
           <TiltCard className="" />
           <Link href="/shop" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: 'calc(50% + 200px)', left: '50%', transform: 'translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-            <ShimmerText label="SHOP" color="red" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+            <ShimmerText label="SHOP" color="white" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@ export default function IndexPage() {
           <TiltCard className="" />
           <Link href="/process" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: '30%', left: 16, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-            <ShimmerText label="PROCESS" color="yellow" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+            <ShimmerText label="PROCESS" color="white" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
         {/* Right section — GALLERY — stops at right diagonal line */}
@@ -133,7 +133,7 @@ export default function IndexPage() {
           <TiltCard className="" />
           <Link href="/gallery" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: '30%', right: 16, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-            <ShimmerText label="GALLERY" color="orange" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+            <ShimmerText label="GALLERY" color="white" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
         {/* Bottom section — SHOP — extends up to meet center point */}
@@ -141,7 +141,7 @@ export default function IndexPage() {
           <TiltCard className="" />
           <Link href="/shop" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ bottom: '30%', left: '50%', transform: 'translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-            <ShimmerText label="SHOP" color="red" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+            <ShimmerText label="SHOP" color="white" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
       </div>
