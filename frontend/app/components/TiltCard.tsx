@@ -71,9 +71,27 @@ export default function TiltCard({ children, className = '', style, zoneRef }: T
       zone.style.setProperty('--tilt-scale', `${sc}`);
     };
 
+    const onTouchStart = (e: TouchEvent) => {
+      inside = true;
+      const t = e.touches[0];
+      const r = zone.getBoundingClientRect();
+      mx = Math.min(Math.max((t.clientX - r.left) / r.width, 0), 1);
+      my = Math.min(Math.max((t.clientY - r.top) / r.height, 0), 1);
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      const t = e.touches[0];
+      const r = zone.getBoundingClientRect();
+      mx = Math.min(Math.max((t.clientX - r.left) / r.width, 0), 1);
+      my = Math.min(Math.max((t.clientY - r.top) / r.height, 0), 1);
+    };
+    const onTouchEnd = () => { inside = false; };
+
     zone.addEventListener('mousemove', onMove);
     zone.addEventListener('mouseenter', onEnter);
     zone.addEventListener('mouseleave', onLeave);
+    zone.addEventListener('touchstart', onTouchStart, { passive: true });
+    zone.addEventListener('touchmove', onTouchMove, { passive: true });
+    zone.addEventListener('touchend', onTouchEnd);
     raf = requestAnimationFrame(loop);
 
     return () => {
@@ -81,6 +99,9 @@ export default function TiltCard({ children, className = '', style, zoneRef }: T
       zone.removeEventListener('mousemove', onMove);
       zone.removeEventListener('mouseenter', onEnter);
       zone.removeEventListener('mouseleave', onLeave);
+      zone.removeEventListener('touchstart', onTouchStart);
+      zone.removeEventListener('touchmove', onTouchMove);
+      zone.removeEventListener('touchend', onTouchEnd);
     };
   }, [zoneRef]);
 
