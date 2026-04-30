@@ -146,7 +146,7 @@ export default function IndexPage() {
 
       {/* Centered logo — independent, above tilt cards */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ zIndex: 10 }}>
-        <div className="md:hidden" style={{ marginBottom: '3%' }}>
+        <div className="md:hidden" style={{ marginBottom: 'calc(3% - 2px)' }}>
           <Image
             src="/assets/images/superhotfin.png"
             alt="Superhot Fabrication Logo"
