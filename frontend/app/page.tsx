@@ -13,79 +13,20 @@ export default function IndexPage() {
   return (
     <main className="relative w-full bg-black overflow-hidden text-white" style={{ height: '100svh', minHeight: '-webkit-fill-available' }}>
 
-      {/* Radiating lines from center — aligned with clip-path triangle edges */}
+      {/* Radiating lines — SVG with exact same % coords as clip-paths */}
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 4 }}>
-        {/* ─── DESKTOP LINES ─── */}
-        {/* Vertical up — from center (50%, 53%) to top */}
-        <div className="hidden md:block" style={{
-          position: 'absolute',
-          left: 'calc(50% - 0.5px)',
-          top: 0,
-          width: 1,
-          height: '53%',
-          background: 'rgba(255,255,255,0.35)',
-        }} />
-        
-        {/* Down-left diagonal — from center (50%, 53%) to bottom-left corner (19.2%, 100%) */}
-        {/* Angle: atan2(47, -30.8) ≈ -56.8° from vertical down */}
-        <div className="hidden md:block" style={{
-          position: 'absolute',
-          left: 'calc(50% - 0.5px)',
-          top: '53%',
-          width: 1,
-          height: '150vh', // long enough to reach corner
-          background: 'rgba(255,255,255,0.35)',
-          transformOrigin: '50% 0%',
-          transform: 'rotate(-56.8deg)',
-        }} />
-        
-        {/* Down-right diagonal — from center (50%, 53%) to bottom-right corner (80.8%, 100%) */}
-        {/* Angle: atan2(47, 30.8) ≈ 56.8° from vertical down */}
-        <div className="hidden md:block" style={{
-          position: 'absolute',
-          left: 'calc(50% - 0.5px)',
-          top: '53%',
-          width: 1,
-          height: '150vh',
-          background: 'rgba(255,255,255,0.35)',
-          transformOrigin: '50% 0%',
-          transform: 'rotate(56.8deg)',
-        }} />
-
-        {/* ─── MOBILE LINES ─── */}
-        {/* Vertical up — from center (50%, 50%) to top */}
-        <div className="md:hidden" style={{
-          position: 'absolute',
-          left: 'calc(50% - 0.5px)',
-          top: 0,
-          width: 1,
-          height: '50%',
-          background: 'rgba(255,255,255,0.35)',
-        }} />
-        
-        {/* Down-left — from (50%,50%) to (0%,75%) */}
-        <div className="md:hidden" style={{
-          position: 'absolute',
-          left: 'calc(50% - 0.5px)',
-          top: '50%',
-          width: 1,
-          height: '150vh',
-          background: 'rgba(255,255,255,0.35)',
-          transformOrigin: '50% 0%',
-          transform: 'rotate(-50deg)',
-        }} />
-        
-        {/* Down-right — from (50%,50%) to (100%,75%) */}
-        <div className="md:hidden" style={{
-          position: 'absolute',
-          left: 'calc(50% - 0.5px)',
-          top: '50%',
-          width: 1,
-          height: '150vh',
-          background: 'rgba(255,255,255,0.35)',
-          transformOrigin: '50% 0%',
-          transform: 'rotate(50deg)',
-        }} />
+        {/* DESKTOP: center (50%,53%), exits at (19.2%,100%) and (80.8%,100%) */}
+        <svg className="hidden md:block absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+          <line x1="50" y1="53" x2="50"  y2="0"   stroke="rgba(255,255,255,0.35)" strokeWidth="0.12" vectorEffect="non-scaling-stroke" />
+          <line x1="50" y1="53" x2="19.2" y2="100" stroke="rgba(255,255,255,0.35)" strokeWidth="0.12" vectorEffect="non-scaling-stroke" />
+          <line x1="50" y1="53" x2="80.8" y2="100" stroke="rgba(255,255,255,0.35)" strokeWidth="0.12" vectorEffect="non-scaling-stroke" />
+        </svg>
+        {/* MOBILE: center (50%,50%), exits at (0%,75%) and (100%,75%) */}
+        <svg className="md:hidden absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+          <line x1="50" y1="50" x2="50"  y2="0"   stroke="rgba(255,255,255,0.35)" strokeWidth="0.3" vectorEffect="non-scaling-stroke" />
+          <line x1="50" y1="50" x2="0"   y2="75"  stroke="rgba(255,255,255,0.35)" strokeWidth="0.3" vectorEffect="non-scaling-stroke" />
+          <line x1="50" y1="50" x2="100" y2="75"  stroke="rgba(255,255,255,0.35)" strokeWidth="0.3" vectorEffect="non-scaling-stroke" />
+        </svg>
       </div>
 
       {/* ── Desktop tilt card sections ── */}
