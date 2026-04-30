@@ -63,7 +63,7 @@ export default function IndexPage() {
           background: 'rgba(255,255,255,0.35)',
         }} />
         
-        {/* Down-left — from (50%,50%) to (0%,60%) */}
+        {/* Down-left — from (50%,50%) to (0%,75%) */}
         <div className="md:hidden" style={{
           position: 'absolute',
           left: 'calc(50% - 0.5px)',
@@ -72,10 +72,10 @@ export default function IndexPage() {
           height: '150vh',
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(-30deg)',
+          transform: 'rotate(-43deg)',
         }} />
         
-        {/* Down-right — from (50%,50%) to (100%,60%) */}
+        {/* Down-right — from (50%,50%) to (100%,75%) */}
         <div className="md:hidden" style={{
           position: 'absolute',
           left: 'calc(50% - 0.5px)',
@@ -84,7 +84,7 @@ export default function IndexPage() {
           height: '150vh',
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(30deg)',
+          transform: 'rotate(43deg)',
         }} />
       </div>
 
@@ -119,7 +119,7 @@ export default function IndexPage() {
       {/* ── Mobile tilt card sections ── */}
       <div className="md:hidden absolute inset-0" style={{ zIndex: 3 }}>
         {/* Left section — PROCESS */}
-        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 50%, 50% 0%, 0% 0%, 0% 70%, 50% 50%)' }}>
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 50%, 50% 0%, 0% 0%, 0% 75%, 50% 50%)' }}>
           <TiltCard className="" />
           <Link href="/process" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: '28%', left: 20, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
@@ -127,7 +127,7 @@ export default function IndexPage() {
           </div>
         </div>
         {/* Right section — GALLERY */}
-        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 50%, 50% 0%, 100% 0%, 100% 70%, 50% 50%)' }}>
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 50%, 50% 0%, 100% 0%, 100% 75%, 50% 50%)' }}>
           <TiltCard className="" />
           <Link href="/gallery" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ top: '28%', right: 20, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
@@ -135,7 +135,7 @@ export default function IndexPage() {
           </div>
         </div>
         {/* Bottom section — SHOP */}
-        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 50%, 0% 70%, 0% 100%, 100% 100%, 100% 70%, 50% 50%)' }}>
+        <div className="absolute inset-0" style={{ clipPath: 'polygon(50% 50%, 0% 75%, 0% 100%, 100% 100%, 100% 75%, 50% 50%)' }}>
           <TiltCard className="" />
           <Link href="/shop" className="absolute inset-0 z-[2] cursor-pointer" />
           <div className="absolute pointer-events-none" style={{ bottom: '20%', left: '50%', transform: 'translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
