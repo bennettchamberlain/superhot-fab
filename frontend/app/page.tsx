@@ -103,7 +103,7 @@ export default function IndexPage() {
             priority
           />
         </div>
-        <div className="hidden md:block" style={{ marginTop: '10px' }}>
+        <div className="hidden md:block" style={{ marginTop: '15px' }}>
           <Image
             src="/assets/images/superhotfin.png"
             alt="Superhot Fabrication Logo"
