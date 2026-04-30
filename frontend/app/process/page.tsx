@@ -9,17 +9,15 @@ export const metadata: Metadata = {
 export default function ProcessPage() {
   return (
     <main className="min-h-screen w-full font-sans bg-black relative overflow-hidden">
-      {/* Background gradient spots */}
-      <div className="fixed inset-0 pointer-events-none" aria-hidden>
-        <div className="absolute w-[1000px] h-[1000px] bg-[#FFB81C]/[0.04] rounded-full blur-3xl animate-shader-yellow -top-60 -left-60" />
-        <div className="absolute w-[1200px] h-[1200px] bg-[#FA4616]/[0.03] rounded-full blur-3xl animate-shader-orange -bottom-80 right-0" />
-        <div className="absolute w-[1100px] h-[1100px] bg-[#DA291C]/[0.03] rounded-full blur-3xl animate-shader-red -left-40 top-1/4" />
-      </div>
-
-      <div className="relative z-10 w-full flex flex-col items-center py-16">
-        <h1 className="text-5xl md:text-6xl font-bold mb-12 text-large-upper bg-gradient-to-r from-[#FFB81C] to-[#FA4616] bg-clip-text text-transparent">
-          Process
-        </h1>
+      <div className="relative z-10 w-full flex flex-col items-center pt-28 pb-24 px-4">
+        {/* Page heading */}
+        <div className="w-full max-w-4xl mb-16">
+          <p className="text-xs tracking-[0.4em] uppercase text-white/30 mb-3">How we work</p>
+          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tight text-white leading-none">
+            PROCESS
+          </h1>
+          <div className="mt-6 h-px w-24 bg-white/20" />
+        </div>
 
         <InfoSection
           title="Measure"
@@ -40,8 +38,8 @@ export default function ProcessPage() {
         />
       </div>
 
-      <footer className="relative z-10 w-full py-4 text-center text-yellow-400/50 text-sm border-t border-yellow-400/10 mt-8">
-        <p>© {new Date().getFullYear()} Superhot Fabrication. All rights reserved.</p>
+      <footer className="relative z-10 w-full py-6 text-center text-white/20 text-xs tracking-widest uppercase border-t border-white/10 mt-8">
+        © {new Date().getFullYear()} Superhot Fabrication
       </footer>
     </main>
   );

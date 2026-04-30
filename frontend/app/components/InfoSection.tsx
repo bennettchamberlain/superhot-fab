@@ -55,10 +55,10 @@ export default function InfoSection({ imageUrl, videoUrl, title, text }: InfoSec
       )}
       {/* Text Content */}
       <div className="flex-1 flex flex-col items-start justify-center w-full max-w-2xl min-h-[320px] md:min-h-[320px]">
-        <h2 className="text-3xl md:text-4xl font-extrabold mb-4 bg-gradient-to-r from-[#FFB81C] to-[#FA4616] bg-clip-text text-transparent">
+        <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-white font-black uppercase tracking-tight">
           {title}
         </h2>
-        <p className="text-lg md:text-xl text-yellow-100 mb-6 whitespace-pre-line">{text}</p>
+        <p className="text-lg md:text-xl text-white/60 mb-6 whitespace-pre-line">{text}</p>
         {/* Video (if present) */}
         {videoUrl && (
           <div className="w-full mt-4">
@@ -69,7 +69,7 @@ export default function InfoSection({ imageUrl, videoUrl, title, text }: InfoSec
               autoPlay
               loop
               playsInline
-              className="w-full rounded-lg border-4 border-yellow-400 shadow-lg max-h-[320px] md:max-h-[340px] object-contain"
+              className="w-full rounded-lg border border-white/20 shadow-lg max-h-[320px] md:max-h-[340px] object-contain"
               style={{ background: "#000" }}
             />
           </div>
