@@ -108,7 +108,7 @@ export default function IndexPage() {
         {/* SHOP */}
         <div className="absolute inset-0">
           <div data-tiltcard="shop" className="absolute inset-0 pointer-events-none" style={{ clipPath: 'polygon(50% 53%, 19.2% 100%, 80.8% 100%, 50% 53%)' }} />
-          <div data-tiltlabel="shop" className="absolute pointer-events-none" style={{ top: 'calc(50% + 200px)', left: '50%', transform: 'translateX(-50%)', willChange: 'transform' }}>
+          <div data-tiltlabel="shop" data-tiltlabel-center="true" className="absolute pointer-events-none" style={{ top: 'calc(50% + 200px)', left: '50%', transform: 'translateX(-50%)', willChange: 'transform' }}>
             <ShimmerText label="SHOP" color="white" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
@@ -139,7 +139,7 @@ export default function IndexPage() {
         {/* SHOP */}
         <div className="absolute inset-0">
           <div data-tiltcard="shop" className="absolute inset-0 pointer-events-none" style={{ clipPath: 'polygon(50% 50%, 0% 75%, 0% 100%, 100% 100%, 100% 75%, 50% 50%)' }} />
-          <div data-tiltlabel="shop" className="absolute pointer-events-none" style={{ bottom: '20%', left: '50%', transform: 'translateX(-50%)', willChange: 'transform' }}>
+          <div data-tiltlabel="shop" data-tiltlabel-center="true" className="absolute pointer-events-none" style={{ bottom: '20%', left: '50%', transform: 'translateX(-50%)', willChange: 'transform' }}>
             <ShimmerText label="SHOP" color="white" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
