@@ -58,7 +58,7 @@ export default function TiltCard({ children, className = '', style, zoneRef }: T
       ry += (tryy - ry) * lerpSpeed;
       sc += (ts - sc) * lerpSpeed;
 
-      const tbg = inside ? 0.035 : 0;
+      const tbg = inside ? 0.12 : 0;
       bgOpacity += (tbg - bgOpacity) * 0.7;
 
       // Card itself: only white highlight, no tilt
