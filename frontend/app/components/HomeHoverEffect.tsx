@@ -65,6 +65,9 @@ export default function HomeHoverEffect() {
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+    // Query siblings — the data-tiltcard/label elements live in the parent container, not inside this div
+    const root = container.parentElement;
+    if (!root) return;
 
     const maxTilt = 32;
     const scaleVal = 1.12;
@@ -74,13 +77,13 @@ export default function HomeHoverEffect() {
 
     const getEls = (i: number) => {
       const id = getSectionId(i);
-      const card = container.querySelector<HTMLElement>(`[data-tiltcard="${id}"]`);
-      const label = container.querySelector<HTMLElement>(`[data-tiltlabel="${id}"]`);
+      const card = root.querySelector<HTMLElement>(`[data-tiltcard="${id}"]`);
+      const label = root.querySelector<HTMLElement>(`[data-tiltlabel="${id}"]`);
       return { card, label };
     };
 
     const onMove = (clientX: number, clientY: number) => {
-      const rect = container.getBoundingClientRect();
+      const rect = root.getBoundingClientRect();
       const mx = clientX - rect.left;
       const my = clientY - rect.top;
       const W = rect.width;
@@ -134,18 +137,18 @@ export default function HomeHoverEffect() {
       onMove(t.clientX, t.clientY);
     };
 
-    container.addEventListener('mousemove', onMouseMove);
-    container.addEventListener('mouseleave', onLeave);
-    container.addEventListener('touchmove', onTouchMove, { passive: true });
-    container.addEventListener('touchend', onLeave);
+    root.addEventListener('mousemove', onMouseMove);
+    root.addEventListener('mouseleave', onLeave);
+    root.addEventListener('touchmove', onTouchMove, { passive: true });
+    root.addEventListener('touchend', onLeave);
     rafRef.current = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(rafRef.current);
-      container.removeEventListener('mousemove', onMouseMove);
-      container.removeEventListener('mouseleave', onLeave);
-      container.removeEventListener('touchmove', onTouchMove);
-      container.removeEventListener('touchend', onLeave);
+      root.removeEventListener('mousemove', onMouseMove);
+      root.removeEventListener('mouseleave', onLeave);
+      root.removeEventListener('touchmove', onTouchMove);
+      root.removeEventListener('touchend', onLeave);
     };
   }, []);
 
