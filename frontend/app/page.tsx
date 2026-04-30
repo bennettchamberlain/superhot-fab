@@ -17,15 +17,15 @@ export default function IndexPage() {
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 4 }}>
         {/* DESKTOP: center (50%,53%), exits at (19.2%,100%) and (80.8%,100%) */}
         <svg className="hidden md:block absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-          <line x1="50" y1="53" x2="50"  y2="0"   stroke="rgba(255,255,255,0.35)" strokeWidth="0.12" vectorEffect="non-scaling-stroke" />
-          <line x1="50" y1="53" x2="19.2" y2="100" stroke="rgba(255,255,255,0.35)" strokeWidth="0.12" vectorEffect="non-scaling-stroke" />
-          <line x1="50" y1="53" x2="80.8" y2="100" stroke="rgba(255,255,255,0.35)" strokeWidth="0.12" vectorEffect="non-scaling-stroke" />
+          <line x1="50" y1="53" x2="50"  y2="0"   stroke="rgba(255,255,255,0.7)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+          <line x1="50" y1="53" x2="19.2" y2="100" stroke="rgba(255,255,255,0.7)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+          <line x1="50" y1="53" x2="80.8" y2="100" stroke="rgba(255,255,255,0.7)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
         </svg>
         {/* MOBILE: center (50%,50%), exits at (0%,75%) and (100%,75%) */}
         <svg className="md:hidden absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-          <line x1="50" y1="50" x2="50"  y2="0"   stroke="rgba(255,255,255,0.35)" strokeWidth="0.3" vectorEffect="non-scaling-stroke" />
-          <line x1="50" y1="50" x2="0"   y2="75"  stroke="rgba(255,255,255,0.35)" strokeWidth="0.3" vectorEffect="non-scaling-stroke" />
-          <line x1="50" y1="50" x2="100" y2="75"  stroke="rgba(255,255,255,0.35)" strokeWidth="0.3" vectorEffect="non-scaling-stroke" />
+          <line x1="50" y1="50" x2="50"  y2="0"   stroke="rgba(255,255,255,0.7)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+          <line x1="50" y1="50" x2="0"   y2="75"  stroke="rgba(255,255,255,0.7)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+          <line x1="50" y1="50" x2="100" y2="75"  stroke="rgba(255,255,255,0.7)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
         </svg>
       </div>
 
@@ -103,7 +103,7 @@ export default function IndexPage() {
             priority
           />
         </div>
-        <div className="hidden md:block">
+        <div className="hidden md:block" style={{ marginTop: '10px' }}>
           <Image
             src="/assets/images/superhotfin.png"
             alt="Superhot Fabrication Logo"
