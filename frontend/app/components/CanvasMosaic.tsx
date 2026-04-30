@@ -127,6 +127,7 @@ export function CanvasMosaic({
   const scaleRef  = useRef(1)
   const dragging  = useRef(false)
   const lastPtr   = useRef({x: 0, y: 0})
+  const dragStart = useRef({x: 0, y: 0})
   const pinchRef  = useRef<{dist: number; midX: number; midY: number} | null>(null)
 
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
@@ -157,9 +158,9 @@ export function CanvasMosaic({
   // ── Pointer drag ───────────────────────────────────────────────────────────
   const onPointerDown = useCallback((e: ReactPointerEvent<HTMLDivElement>) => {
     if (lightboxIdx !== null) return
-    if ((e.target as HTMLElement).closest('[data-item]')) return
     dragging.current = true
     lastPtr.current = {x: e.clientX, y: e.clientY}
+    dragStart.current = {x: e.clientX, y: e.clientY}
     cancelAnimationFrame(rafRef.current)
     velRef.current = {x: 0, y: 0}
     wrapRef.current?.setPointerCapture(e.pointerId)
@@ -385,7 +386,11 @@ export function CanvasMosaic({
               <button
                 key={cell.item._key}
                 data-item="true"
-                onClick={() => setLightboxIdx(cell.index)}
+                onPointerUp={(e) => {
+                  const dx = e.clientX - dragStart.current.x
+                  const dy = e.clientY - dragStart.current.y
+                  if (Math.sqrt(dx*dx + dy*dy) < 6) setLightboxIdx(cell.index)
+                }}
                 aria-label={cell.item.name ?? `Media ${cell.index + 1}`}
                 style={{
                   position: 'absolute',
