@@ -90,49 +90,63 @@ export default function IndexPage() {
 
       {/* ── Desktop tilt card sections ── */}
       <div className="hidden md:block absolute inset-0" style={{ zIndex: 3 }}>
-        {/* Clipped hover + nav zones */}
-        <Link href="/process" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 53%, 50% 0%, 0% 0%, 0% 100%, 19.2% 100%, 50% 53%)' }}>
-          <TiltCard className="" />
-        </Link>
-        <Link href="/gallery" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 53%, 50% 0%, 100% 0%, 100% 100%, 80.8% 100%, 50% 53%)' }}>
-          <TiltCard className="" />
-        </Link>
-        <Link href="/shop" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 53%, 19.2% 100%, 80.8% 100%, 50% 53%)' }}>
-          <TiltCard className="" />
-        </Link>
-        {/* Labels — separate layer, not clipped */}
-        <div className="absolute pointer-events-none" style={{ top: 'calc(50% - 150px)', left: 'calc(50% - 370px)', transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-          <ShimmerText label="PROCESS" color="white" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+        {/* PROCESS */}
+        <div className="absolute inset-0">
+          <Link href="/process" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 53%, 50% 0%, 0% 0%, 0% 100%, 19.2% 100%, 50% 53%)' }}>
+            <TiltCard />
+          </Link>
+          <div className="absolute pointer-events-none" style={{ top: 'calc(50% - 150px)', left: 'calc(50% - 370px)', transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="PROCESS" color="white" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+          </div>
         </div>
-        <div className="absolute pointer-events-none" style={{ top: 'calc(50% - 150px)', right: 'calc(50% - 370px)', transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-          <ShimmerText label="GALLERY" color="white" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+        {/* GALLERY */}
+        <div className="absolute inset-0">
+          <Link href="/gallery" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 53%, 50% 0%, 100% 0%, 100% 100%, 80.8% 100%, 50% 53%)' }}>
+            <TiltCard />
+          </Link>
+          <div className="absolute pointer-events-none" style={{ top: 'calc(50% - 150px)', right: 'calc(50% - 370px)', transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="GALLERY" color="white" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+          </div>
         </div>
-        <div className="absolute pointer-events-none" style={{ top: 'calc(50% + 200px)', left: '50%', transform: 'translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-          <ShimmerText label="SHOP" color="white" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+        {/* SHOP */}
+        <div className="absolute inset-0">
+          <Link href="/shop" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 53%, 19.2% 100%, 80.8% 100%, 50% 53%)' }}>
+            <TiltCard />
+          </Link>
+          <div className="absolute pointer-events-none" style={{ top: 'calc(50% + 200px)', left: '50%', transform: 'translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="SHOP" color="white" textClassName="text-3xl font-black uppercase tracking-widest drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" />
+          </div>
         </div>
       </div>
 
       {/* ── Mobile tilt card sections ── */}
       <div className="md:hidden absolute inset-0" style={{ zIndex: 3 }}>
-        {/* Clipped hover + nav zones */}
-        <Link href="/process" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 50%, 50% 0%, 0% 0%, 0% 75%, 50% 50%)' }}>
-          <TiltCard className="" />
-        </Link>
-        <Link href="/gallery" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 50%, 50% 0%, 100% 0%, 100% 75%, 50% 50%)' }}>
-          <TiltCard className="" />
-        </Link>
-        <Link href="/shop" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 50%, 0% 75%, 0% 100%, 100% 100%, 100% 75%, 50% 50%)' }}>
-          <TiltCard className="" />
-        </Link>
-        {/* Labels — separate layer, not clipped */}
-        <div className="absolute pointer-events-none" style={{ top: '28%', left: 20, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-          <ShimmerText label="PROCESS" color="white" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+        {/* PROCESS */}
+        <div className="absolute inset-0">
+          <Link href="/process" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 50%, 50% 0%, 0% 0%, 0% 75%, 50% 50%)' }}>
+            <TiltCard />
+          </Link>
+          <div className="absolute pointer-events-none" style={{ top: '28%', left: 20, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="PROCESS" color="white" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+          </div>
         </div>
-        <div className="absolute pointer-events-none" style={{ top: '28%', right: 20, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-          <ShimmerText label="GALLERY" color="white" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+        {/* GALLERY */}
+        <div className="absolute inset-0">
+          <Link href="/gallery" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 50%, 50% 0%, 100% 0%, 100% 75%, 50% 50%)' }}>
+            <TiltCard />
+          </Link>
+          <div className="absolute pointer-events-none" style={{ top: '28%', right: 20, transform: 'perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="GALLERY" color="white" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+          </div>
         </div>
-        <div className="absolute pointer-events-none" style={{ bottom: '20%', left: '50%', transform: 'translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
-          <ShimmerText label="SHOP" color="white" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+        {/* SHOP */}
+        <div className="absolute inset-0">
+          <Link href="/shop" className="absolute inset-0 block" style={{ clipPath: 'polygon(50% 50%, 0% 75%, 0% 100%, 100% 100%, 100% 75%, 50% 50%)' }}>
+            <TiltCard />
+          </Link>
+          <div className="absolute pointer-events-none" style={{ bottom: '20%', left: '50%', transform: 'translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+            <ShimmerText label="SHOP" color="white" textClassName="text-2xl font-black uppercase tracking-widest drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
+          </div>
         </div>
       </div>
 
