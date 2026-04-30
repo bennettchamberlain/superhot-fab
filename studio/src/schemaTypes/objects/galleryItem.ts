@@ -76,6 +76,14 @@ export const galleryItem = defineType({
     }),
 
     defineField({
+      name: 'project',
+      title: 'Project',
+      type: 'reference',
+      to: [{type: 'project'}],
+      description: 'Optional — groups this item with other images from the same project in the lightbox',
+    }),
+
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'text',

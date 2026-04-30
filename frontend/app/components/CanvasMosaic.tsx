@@ -23,6 +23,7 @@ export interface GalleryMediaItem {
   _key: string
   name?: string
   mediaType: 'image' | 'video'
+  project?: { _id: string; name: string; slug?: { current: string } }
   image?: {
     asset?: {_id?: string; url?: string; metadata?: {dimensions?: {width: number; height: number}}}
     alt?: string
@@ -265,9 +266,32 @@ export function CanvasMosaic({
   const flatItems = cells.map(c => c.item)
   const isOpen = lightboxIdx !== null
   const currentItem = isOpen ? flatItems[lightboxIdx] : null
+
+  // When a project is set, prev/next navigates within that project only
+  const projectSiblings = currentItem?.project
+    ? flatItems
+        .map((item, idx) => ({item, idx}))
+        .filter(({item}) => item.project?._id === currentItem.project!._id)
+    : null
+  const projectPos = projectSiblings
+    ? projectSiblings.findIndex(({idx}) => idx === lightboxIdx)
+    : -1
+
   const close = useCallback(() => setLightboxIdx(null), [])
-  const prev  = useCallback(() => setLightboxIdx(i => i === null ? null : (i - 1 + flatItems.length) % flatItems.length), [flatItems.length])
-  const nextL = useCallback(() => setLightboxIdx(i => i === null ? null : (i + 1) % flatItems.length), [flatItems.length])
+  const prev = useCallback(() => {
+    if (projectSiblings && projectSiblings.length > 1 && projectPos > -1) {
+      setLightboxIdx(projectSiblings[(projectPos - 1 + projectSiblings.length) % projectSiblings.length].idx)
+    } else {
+      setLightboxIdx(i => i === null ? null : (i - 1 + flatItems.length) % flatItems.length)
+    }
+  }, [projectSiblings, projectPos, flatItems.length])
+  const nextL = useCallback(() => {
+    if (projectSiblings && projectSiblings.length > 1 && projectPos > -1) {
+      setLightboxIdx(projectSiblings[(projectPos + 1) % projectSiblings.length].idx)
+    } else {
+      setLightboxIdx(i => i === null ? null : (i + 1) % flatItems.length)
+    }
+  }, [projectSiblings, projectPos, flatItems.length])
 
   useEffect(() => { document.body.style.overflow = isOpen ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [isOpen])
   useEffect(() => {
@@ -463,11 +487,18 @@ export function CanvasMosaic({
                 </div>
               ) : null}
             </div>
-            {(currentItem.name || currentItem.description) && (
+            {(currentItem.name || currentItem.description || currentItem.project) && (
               <aside className="lg:w-72 flex-shrink-0 bg-zinc-900/80 backdrop-blur-sm p-8 flex flex-col overflow-y-auto">
+                {currentItem.project && (
+                  <p className="text-zinc-500 text-xs uppercase tracking-widest mb-2">{currentItem.project.name}</p>
+                )}
                 {currentItem.name && <h2 className="text-lg font-bold text-white mb-4 leading-tight">{currentItem.name}</h2>}
                 {currentItem.description && <p className="text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap">{currentItem.description}</p>}
-                <p className="text-zinc-600 text-xs mt-auto pt-6">{lightboxIdx! + 1} / {flatItems.length}</p>
+                <p className="text-zinc-600 text-xs mt-auto pt-6">
+                  {projectSiblings && projectSiblings.length > 1
+                    ? `${projectPos + 1} / ${projectSiblings.length} in project`
+                    : `${lightboxIdx! + 1} / ${flatItems.length}`}
+                </p>
               </aside>
             )}
           </div>

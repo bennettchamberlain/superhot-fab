@@ -12,6 +12,7 @@ const GALLERIES_QUERY = `*[_type == "gallery" && slug.current == "fabrication-po
     _key,
     name,
     mediaType,
+    project->{ _id, name, slug },
     image {
       asset->{ _id, _ref, url, metadata{ dimensions } },
       alt,
