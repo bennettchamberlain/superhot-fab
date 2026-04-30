@@ -107,7 +107,6 @@ const DRAG_DAMPING = 0.65
 const FRICTION     = 0.88
 const ZOOM_MIN     = 0.5
 const ZOOM_MAX     = 3.5
-const TILT_MAX_DEG = 6
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -136,13 +135,12 @@ export function CanvasMosaic({
 
   const {cells, totalHeight, canvasW} = buildMasonry(items, columns, colWidth, gap, TITLE_H)
 
-    const applyTransform = useCallback(() => {
+  const applyTransform = useCallback(() => {
     const el = canvasRef.current
     if (!el) return
     const s = scaleRef.current
     const {x, y} = camRef.current
-    const tilt = TILT_MAX_DEG * Math.max(0, 1 - (s - ZOOM_MIN) / (ZOOM_MAX - ZOOM_MIN))
-    el.style.transform = `perspective(1600px) rotateX(${tilt}deg) translate(${x}px, ${y}px) scale(${s})`
+    el.style.transform = `translate(${x}px, ${y}px) scale(${s})`
   }, [])
 
   // ── Inertia loop ───────────────────────────────────────────────────────────
