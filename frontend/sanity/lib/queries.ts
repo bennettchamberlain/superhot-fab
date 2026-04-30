@@ -302,3 +302,14 @@ export const productSlugs = defineQuery(`
   *[_type == "product" && defined(slug.current)]
   {"slug": slug.current}
 `)
+
+export const allProcessStepsQuery = defineQuery(`
+  *[_type == "processStep"] | order(order asc) {
+    _id,
+    title,
+    order,
+    body,
+    "videoUrl": video.asset->url,
+    "imageUrl": image.asset->url,
+  }
+`)

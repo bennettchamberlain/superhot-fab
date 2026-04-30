@@ -2,6 +2,7 @@ import {post} from './documents/post'
 import {product} from './documents/product'
 import {gallery} from './documents/gallery'
 import {project} from './documents/project'
+import processStep from './documents/processStep'
 import {callToAction} from './objects/callToAction'
 import {infoSection} from './objects/infoSection'
 import {settings} from './singletons/settings'
@@ -28,6 +29,7 @@ export const schemaTypes = [
   product,
   gallery,
   project,
+  processStep,
   // Objects
   button,
   blockContent,
