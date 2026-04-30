@@ -64,11 +64,17 @@ export default function TiltCard({ children, className = '', style, zoneRef }: T
       // Card itself: only white highlight, no tilt
       card.style.backgroundColor = `rgba(255,255,255,${bgOpacity})`;
 
-      // Publish tilt values as CSS custom properties on the zone
-      // so label children can pick them up
+      // Publish tilt values as CSS custom properties on the zone AND its parent
+      // so sibling label elements in the same container can pick them up
       zone.style.setProperty('--tilt-x', `${rx}deg`);
       zone.style.setProperty('--tilt-y', `${ry}deg`);
       zone.style.setProperty('--tilt-scale', `${sc}`);
+      const parent = zone.parentElement;
+      if (parent) {
+        parent.style.setProperty('--tilt-x', `${rx}deg`);
+        parent.style.setProperty('--tilt-y', `${ry}deg`);
+        parent.style.setProperty('--tilt-scale', `${sc}`);
+      }
     };
 
     const onTouchStart = (e: TouchEvent) => {
