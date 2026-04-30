@@ -63,7 +63,7 @@ export default function IndexPage() {
           background: 'rgba(255,255,255,0.35)',
         }} />
         
-        {/* Down-left — from (50%,50%) to (0%,70%) */}
+        {/* Down-left — from (50%,50%) to (0%,60%) */}
         <div className="md:hidden" style={{
           position: 'absolute',
           left: 'calc(50% - 0.5px)',
@@ -72,10 +72,10 @@ export default function IndexPage() {
           height: '150vh',
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(-21.8deg)',
+          transform: 'rotate(-30deg)',
         }} />
         
-        {/* Down-right — from (50%,50%) to (100%,70%) */}
+        {/* Down-right — from (50%,50%) to (100%,60%) */}
         <div className="md:hidden" style={{
           position: 'absolute',
           left: 'calc(50% - 0.5px)',
@@ -84,7 +84,7 @@ export default function IndexPage() {
           height: '150vh',
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(21.8deg)',
+          transform: 'rotate(30deg)',
         }} />
       </div>
 
