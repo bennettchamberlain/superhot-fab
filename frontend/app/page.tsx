@@ -72,7 +72,7 @@ export default function IndexPage() {
           height: '150vh',
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(-43deg)',
+          transform: 'rotate(-50deg)',
         }} />
         
         {/* Down-right — from (50%,50%) to (100%,75%) */}
@@ -84,7 +84,7 @@ export default function IndexPage() {
           height: '150vh',
           background: 'rgba(255,255,255,0.35)',
           transformOrigin: '50% 0%',
-          transform: 'rotate(43deg)',
+          transform: 'rotate(50deg)',
         }} />
       </div>
 
