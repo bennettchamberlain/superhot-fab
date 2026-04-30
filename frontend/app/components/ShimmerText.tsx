@@ -136,8 +136,7 @@ export default function ShimmerText({
       style={{
         backgroundSize: '100% 100%',
         backgroundRepeat: 'no-repeat',
-        WebkitTextFillColor: 'transparent',
-        color: color === 'orange' ? '#FFB81C' : color === 'yellow' ? '#FFD000' : color === 'red' ? '#FF3B1C' : undefined,
+        WebkitTextFillColor: color === 'orange' ? '#FFB81C' : color === 'yellow' ? '#FFD000' : color === 'red' ? '#FF3B1C' : 'transparent',
         whiteSpace: lines ? 'pre-line' : undefined,
       }}
     >
