@@ -8,10 +8,10 @@
     "lint:fix": "eslint . --fix",
     "start": "next start -p 3062",
     "type-check": "tsc --noEmit",
-    "typegen": "sanity typegen generate"
+    "typegen": "npx sanity typegen generate"
   },
   "dependencies": {
-    "@sanity/client": "^7.13.2",
+    "@sanity/client": "^7.21.0",
     "@sanity/image-url": "^1.2.0",
     "@sanity/uuid": "^3.0.2",
     "@stripe/stripe-js": "^4.8.0",
@@ -28,7 +28,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-swipeable": "^7.0.1",
-    "sanity": "^5.1.0",
+    "sanity": "^5.25.1",
     "sanity-image": "^1.0.0",
     "sonner": "^2.0.7",
     "stripe": "^17.4.0",
