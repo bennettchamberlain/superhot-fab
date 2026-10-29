@@ -11,7 +11,7 @@ export default function Video1Page() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-black px-4 py-16 text-white">
       <video
-        src={`${VIDEO_URL}/video1.mp4`}
+        src={`${VIDEO_URL}/video2.mp4`}
         controls
         playsInline
         className="w-full max-w-5xl bg-black"
