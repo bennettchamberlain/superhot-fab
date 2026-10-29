@@ -65,6 +65,13 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   return (
     <html lang="en">
       <body className="antialiased">
+        {/* Sits behind every page; only peeks out where a page doesn't cover the body. */}
+        <p
+          aria-hidden
+          className="pointer-events-none fixed inset-x-0 bottom-3 -z-10 select-none text-center text-[9px] uppercase tracking-[0.3em] text-white/25"
+        >
+          you found the back of the shop. safety glasses on.
+        </p>
         {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
         <Toaster />
         {isDraftMode && (
