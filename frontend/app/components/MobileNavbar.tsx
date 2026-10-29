@@ -1,16 +1,16 @@
 "use client";
 import Link from "next/link";
-import ShimmerText from "./ShimmerText";
+import FireText from "./FireText";
 
 export default function MobileNavbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 w-full flex items-center justify-between px-4 py-3 bg-black/60 border-b border-white/15 backdrop-blur-sm">
-      <ShimmerText
+      <FireText
         href="/"
         lines={["SUPERHOT", "FABRICATION"]}
-        color="orange"
         className="flex items-center"
-        textClassName="text-xl font-black uppercase leading-none tracking-wider drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
+        textClassName="text-xl font-black uppercase leading-none tracking-wider"
+        shadowClassName="drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
       />
       <Link
         href="/contact"

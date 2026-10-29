@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import ShimmerText from './components/ShimmerText';
 import HomeHoverEffect from './components/HomeHoverEffect';
-import LogoFire from './components/LogoFire';
 
 export const metadata: Metadata = {
   title: 'Superhot Fabrication — We Construct Your Concepts',
@@ -94,10 +94,24 @@ export default function IndexPage() {
       {/* Centered logo — independent, above tilt cards */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ zIndex: 10 }}>
         <div className="md:hidden" style={{ marginBottom: 'calc(3% - 2px)' }}>
-          <LogoFire size={80} glowClassName="drop-shadow-[0_0_32px_rgba(255,184,28,0.4)]" />
+          <Image
+            src="/assets/images/superhotfin.png"
+            alt="Superhot Fabrication Logo"
+            width={80}
+            height={80}
+            className="object-contain drop-shadow-[0_0_32px_rgba(255,184,28,0.4)] animate-float"
+            priority
+          />
         </div>
         <div className="hidden md:block" style={{ marginTop: '23px' }}>
-          <LogoFire size={200} glowClassName="drop-shadow-[0_0_40px_rgba(255,184,28,0.4)]" />
+          <Image
+            src="/assets/images/superhotfin.png"
+            alt="Superhot Fabrication Logo"
+            width={200}
+            height={200}
+            className="object-contain drop-shadow-[0_0_40px_rgba(255,184,28,0.4)] animate-float"
+            priority
+          />
         </div>
       </div>
 
